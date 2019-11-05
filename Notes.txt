@@ -1,0 +1,45 @@
+-> Auction system
+
+
+-> Server
+	=> Offer items for sale
+	=> Item is sold to highest bidder
+	=> Allow clients to create new items for sale. i.e. Create new auctions
+
+	==> REQUIREMENTS
+		=> Allow the client to
+			-> Join auction
+			-> Leave auction
+			-> Bid on item
+			-> List auction items
+			-> Create new auctions
+		=> Handle multiple clients
+		=> Register new clients (unique name policy)
+		=> After connection, tell client which item is on sale & current bid
+		=> Specify the bid period
+			-> Max 1 minute
+		=> After new bid
+			-> Bid period is reset
+			-> All clients immediately notified
+			-> Clients should be notified of the bid period remaining
+		=> After bid period
+			-> Auction closes
+			-> The winner is announced and all clients are notified
+		=> After auction closes
+			-> New item is auctioned
+			-> The same item should not be auctioned
+			-> Min of 5 items for auction one after another
+
+
+-> Clients
+	=> Can only bid on items! 
+	=> Cannot purchase them
+
+	==> REQUIREMENTS
+		=> Connect to server
+		=> Can see:
+			-> The item currently on sale
+			-> The current (highest) bid for that item
+		=> Bid on an item (must be greater than current bid)
+		=> New bid to display on all clients
+		=> Be able to create items for sale
