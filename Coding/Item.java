@@ -1,15 +1,18 @@
 // import java.net.*;
 import java.io.*;
-import java.util*;
+import java.util.*;
 
 public class Item
 {
 	private float currentBid;
-	private Client highestBidder = null;
+	private Client highestBidder;
+	private String itemName;
 
-	public Item(float currentBid)
+	public Item(String itemName, float currentBid)
 	{
 		this.currentBid = currentBid;
+		this.itemName = itemName;
+		this.highestBidder = null;
 	}
 
 	public float getCurrentBid()
@@ -20,6 +23,16 @@ public class Item
 	public void setCurrentBid(float currentBid)
 	{
 		this.currentBid = currentBid;
+	}
+
+	public String getItemName()
+	{
+		return itemName;
+	}
+
+	public void setItemName(String itemName)
+	{
+		this.itemName = itemName;
 	}
 
 	public Client getHighestBidder()
