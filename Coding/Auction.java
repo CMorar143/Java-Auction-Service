@@ -4,17 +4,18 @@ import java.util.*;
 
 public class Auction
 {
-	// ArrayList<String>
-	ArrayList<Items> Items = new ArrayList<>();
-
-	public void addItem(String name, float currentBid) 
-	{
-    	Item newItem = new Item(name, currentBid);
-		Items.add(newItem);
-	}
+	ArrayList<Item> Items = new ArrayList<>();
+	ArrayList<Client> Clients = new ArrayList<>();
 
 	public void displayMenu()
 	{
-		
+
 	}
+
+	public void listAuctionItems()
+	{
+
+	}
+
+
 }

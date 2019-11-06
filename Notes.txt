@@ -14,7 +14,7 @@
 			-> List auction items
 			-> Create new auctions
 		=> Handle multiple clients
-		=> Register new clients (unique name policy)
+		=> Register new clients (unique name policy) [Store these in files]
 		=> After connection, tell client which item is on sale & current bid
 		=> Specify the bid period
 			-> Max 1 minute
