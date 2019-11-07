@@ -2,19 +2,20 @@
 import java.io.*;
 import java.util.*;
 
-public class Auction
+public class Auction implements Serializable
 {
 	ArrayList<Item> Items = new ArrayList<>();
 	ArrayList<Client> Clients = new ArrayList<>();
 
+	public Auction()
+	{
+
+	}
+
 	// This should be in the server class
 	public void displayMenu()
 	{
-		// 1 Join auction
-		// 2 Leave auction
-		// 3 Bid on an item.
-		// 4 List auction items
-		// 5 Create new auctions
+		System.out.println("test");
 	}
 
 	public void addClient(Client c)
