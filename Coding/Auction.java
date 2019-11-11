@@ -4,19 +4,23 @@ import java.util.*;
 
 public class Auction implements Serializable
 {
-	ArrayList<Item> Items = new ArrayList<>();
-	ArrayList<Client> Clients = new ArrayList<>();
-	private String test;
+	private ArrayList<Item> Items = new ArrayList<Item>();
+	private ArrayList<Client> Clients = new ArrayList<Client>();
+	private ArrayList<String> menu = new ArrayList<String>();
 
-	public Auction(String test)
+	public Auction()
 	{
-		this.test = test;
+		menu.add("1. Join Auction");
+		menu.add("2. Leave Auction");
+		menu.add("3. Bid on Item");
+		menu.add("4. List Auction Items");
+		menu.add("5. Create a New Auction");
 	}
 
 	// This should be in the server class
-	public void displayMenu()
+	public ArrayList<String> displayMenu()
 	{
-		// System.out.println("test");
+		return menu;
 	}
 
 	public void addClient(Client c)
@@ -49,15 +53,5 @@ public class Auction implements Serializable
 	{
 		Item newItem = new Item(name, currentBid);
 		Items.add(newItem);
-	}
-
-	public String getTest()
-	{
-		return test;
-	}
-
-	public void setTest(String test)
-	{
-		this.test = test;
 	}
 }

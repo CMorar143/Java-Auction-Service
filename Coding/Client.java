@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class Client
 {
@@ -12,13 +13,6 @@ public class Client
 		// pr.println("hello from client");
 		// pr.flush();
 
-		// ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
-		// // InputStreamReader in = new InputStreamReader(s.getInputStream());
-		// // BufferedReader bf = new BufferedReader(in);
-
-		// // String str = bf.readLine();
-		// // System.out.println("server : " + str);
-
 		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 		// InputStreamReader in = new InputStreamReader(s.getInputStream());
 		// BufferedReader bf = new BufferedReader(in);
@@ -26,21 +20,22 @@ public class Client
 		// String str = bf.readLine();
 		// System.out.println("server : " + str);
 
-		try
-		{
-			auction = (Auction) objectIn.readObject();
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
+		// try
+		// {
+		// 	auction = (Auction) objectIn.readObject();
+		// }
+		// catch(Exception e)
+		// {
+		// 	System.out.println(e);
+		// }
 
-		if (auction != null)
-		{
-			System.out.println(":)");
-		}
+		// if (auction != null)
+		// {
+		// 	System.out.println(":)");
+		// }
 
-		System.out.println(auction.getTest());
+		// // Display menu
+		// Arraylist<String> menu = new Arraylist<String>();
 
 		s.close();
 	}

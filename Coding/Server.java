@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Server /*implements Runnable*/
 {  
@@ -20,7 +20,8 @@ public class Server /*implements Runnable*/
 	{
 		Scanner input = new Scanner(System.in);
 		ServerSocket ss = new ServerSocket(4999);
-		Auction auction = new Auction("Server test 1");
+		Auction auction = new Auction();
+		ArrayList<String> menu = auction.displayMenu();
 
 		// while(auction != null)
 		// {
@@ -36,7 +37,7 @@ public class Server /*implements Runnable*/
 			// // System.out.println("client : " + str);
 
 			// objectOut.writeObject(auction);
-			// // PrintWriter pr = new PrintWriter(s.getOutputStream());
+			// PrintWriter pr = new PrintWriter(s.getOutputStream());
 			// pr.println("test");
 			// pr.flush();
 		// }
@@ -49,9 +50,9 @@ public class Server /*implements Runnable*/
 
 		// String str = bf.readLine();
 		// System.out.println("client : " + str);
+		// Display menu
 
-		auction.setTest("server test 2");
-		objectOut.writeObject(auction);
+		objectOut.writeObject(menu);
 
 		ss.close();
 		s.close();
