@@ -20,8 +20,8 @@ public class Server /*implements Runnable*/
 	{
 		Scanner input = new Scanner(System.in);
 		ServerSocket ss = new ServerSocket(4999);
-		Auction auction = null;
-		
+		Auction auction = new Auction("Server test 1");
+
 		// while(auction != null)
 		// {
 			Socket s = ss.accept();
@@ -43,28 +43,15 @@ public class Server /*implements Runnable*/
 
 
 
-		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 		// InputStreamReader in = new InputStreamReader(s.getInputStream());
 		// BufferedReader bf = new BufferedReader(in);
 
 		// String str = bf.readLine();
-		// System.out.println("server : " + str);
+		// System.out.println("client : " + str);
 
-		try
-		{
-			auction = (Auction) objectIn.readObject();
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-
-		if (auction != null)
-		{
-			System.out.println(":)");
-		}
-
-		auction.displayMenu();
+		auction.setTest("server test 2");
+		objectOut.writeObject(auction);
 
 		ss.close();
 		s.close();

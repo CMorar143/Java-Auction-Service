@@ -5,7 +5,7 @@ public class Client
 {
 	public static void main(String[] args) throws IOException
 	{
-		Auction auction = new Auction();
+		Auction auction = null;
 		Socket s = new Socket("localhost", 4999);
 
 		// PrintWriter pr = new PrintWriter(s.getOutputStream());
@@ -19,29 +19,29 @@ public class Client
 		// // String str = bf.readLine();
 		// // System.out.println("server : " + str);
 
-		// try
-		// {
-		// 	auction = (Auction) objectIn.readObject();
-		// }
-		// catch(Exception e)
-		// {
-		// 	System.out.println(e);
-		// }
+		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+		// InputStreamReader in = new InputStreamReader(s.getInputStream());
+		// BufferedReader bf = new BufferedReader(in);
 
-		// if (auction != null)
-		// {
-		// 	System.out.println(":)");
-		// }
+		// String str = bf.readLine();
+		// System.out.println("server : " + str);
 
+		try
+		{
+			auction = (Auction) objectIn.readObject();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 
-			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
-			// InputStreamReader in = new InputStreamReader(s.getInputStream());
-			// BufferedReader bf = new BufferedReader(in);
+		if (auction != null)
+		{
+			System.out.println(":)");
+		}
 
-			// String str = bf.readLine();
-			// System.out.println("client : " + str);
+		System.out.println(auction.getTest());
 
-			objectOut.writeObject(auction);
 		s.close();
 	}
 }

@@ -6,16 +6,17 @@ public class Auction implements Serializable
 {
 	ArrayList<Item> Items = new ArrayList<>();
 	ArrayList<Client> Clients = new ArrayList<>();
+	private String test;
 
-	public Auction()
+	public Auction(String test)
 	{
-
+		this.test = test;
 	}
 
 	// This should be in the server class
 	public void displayMenu()
 	{
-		System.out.println("test");
+		// System.out.println("test");
 	}
 
 	public void addClient(Client c)
@@ -48,5 +49,15 @@ public class Auction implements Serializable
 	{
 		Item newItem = new Item(name, currentBid);
 		Items.add(newItem);
+	}
+
+	public String getTest()
+	{
+		return test;
+	}
+
+	public void setTest(String test)
+	{
+		this.test = test;
 	}
 }
