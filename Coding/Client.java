@@ -8,37 +8,45 @@ public class Client
 	{
 		Auction auction = null;
 		Socket s = new Socket("localhost", 4999);
-		ArrayList<String> menu = new ArrayList<String>();
+		ArrayList<String> menu = null;
 
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
+		// InputStreamReader in = new InputStreamReader(s.getInputStream());
+		// BufferedReader bf = new BufferedReader(in);
 		Scanner scan = new Scanner(System.in);
+		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
-		while(true)
+		// while(true)
 		{
-			String messageFromServer = bf.readLine();
-			System.out.println(messageFromServer + "\n");
+			// String messageFromServer = bf.readLine();
+			// if (bf.readLine() != null)
+			// 	System.out.println(messageFromServer + "\n");
 
-			// Display Menu
-			for (int i = 0; i < 5; i++)
-			{
-				String menuItem = bf.readLine();
-				menu.add(menuItem);
-			}
+			// // Display Menu
+			// for (int i = 0; i < 5; i++)
+			// {
+			// 	// if (bf.readLine() != null)
+			// 	{
+			// 		String menuItem = bf.readLine();
+			// 		menu.add(menuItem);
+			// 	}
+			// }
 
 			// String str = bf.readLine();
 			// System.out.println("server : " + str);
 
-			displayMenu(menu);
+			// displayMenu(menu);
 
-			// try
-			// {
-			// 	auction = (Auction) objectIn.readObject();
-			// }
-			// catch(Exception e)
-			// {
-			// 	System.out.println(e);
-			// }
+			try
+			{
+				Object object = objectIn.readObject();
+                menu = (ArrayList<String>)object;
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+
+			System.out.println(menu);
 
 			// if (auction != null)
 			// {
@@ -47,8 +55,8 @@ public class Client
 
 			// // Display menu
 			// Arraylist<String> menu = new Arraylist<String>();
-			
-			int i = scan.nextInt();
+
+			// int i = scan.nextInt();
 		}
 		// s.close();
 	}

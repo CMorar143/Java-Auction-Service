@@ -27,8 +27,8 @@ public class Server /*implements Runnable*/
 		{
 			Socket s = ss.accept();
 			
-			OutputStreamWriter out = new OutputStreamWriter(s.getOutputStream());
-			BufferedWriter bf = new BufferedWriter(out);
+			// OutputStreamWriter out = new OutputStreamWriter(s.getOutputStream());
+			// BufferedWriter bf = new BufferedWriter(out);
 			
 			System.out.println("client connected");
 			
@@ -49,21 +49,23 @@ public class Server /*implements Runnable*/
 			// bf.write(st);
 			// bf.flush();
 
-			System.out.println(menu);
+			// System.out.println(menu);
 
-			String str = "Choose an option from the menu";
-			bf.write(str + "\r\n");
-			bf.flush();
+			// String str = "Choose an option from the menu";
+			// bf.write(str + "\r\n");
+			// bf.flush();
 
 			// Send menu to client
-			for (int i = 0; i < menu.size(); i++)
-			{
-				str = menu.get(i);
-				bf.write(str + "\r\n");
-				bf.flush();
-			}
+			// for (int i = 0; i < menu.size(); i++)
+			// {
+			// // 	str = menu.get(i);
+			// // 	bf.write(str + "\r\n");
+			// // 	bf.flush();
+   //              pr.println(menu.get(i) + "\r\n");
+   //              System.out.println(menu.get(i));
+			// }
 
-			// ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
+			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 			// InputStreamReader in = new InputStreamReader(s.getInputStream());
 			// BufferedReader bf = new BufferedReader(in);
 
@@ -71,7 +73,7 @@ public class Server /*implements Runnable*/
 			// System.out.println("client : " + str);
 			// Display menu
 
-			// objectOut.writeObject(menu);
+			objectOut.writeObject(menu);
 			s.close();
 		}
 		// ss.close();
