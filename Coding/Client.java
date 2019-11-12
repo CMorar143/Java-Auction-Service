@@ -8,35 +8,56 @@ public class Client
 	{
 		Auction auction = null;
 		Socket s = new Socket("localhost", 4999);
+		ArrayList<String> menu = new ArrayList<String>();
 
-		// PrintWriter pr = new PrintWriter(s.getOutputStream());
-		// pr.println("hello from client");
-		// pr.flush();
+		InputStreamReader in = new InputStreamReader(s.getInputStream());
+		BufferedReader bf = new BufferedReader(in);
+		Scanner scan = new Scanner(System.in);
 
-		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
-		// InputStreamReader in = new InputStreamReader(s.getInputStream());
-		// BufferedReader bf = new BufferedReader(in);
+		while(true)
+		{
+			String messageFromServer = bf.readLine();
+			System.out.println(messageFromServer + "\n");
 
-		// String str = bf.readLine();
-		// System.out.println("server : " + str);
+			// Display Menu
+			for (int i = 0; i < 5; i++)
+			{
+				String menuItem = bf.readLine();
+				menu.add(menuItem);
+			}
 
-		// try
-		// {
-		// 	auction = (Auction) objectIn.readObject();
-		// }
-		// catch(Exception e)
-		// {
-		// 	System.out.println(e);
-		// }
+			// String str = bf.readLine();
+			// System.out.println("server : " + str);
 
-		// if (auction != null)
-		// {
-		// 	System.out.println(":)");
-		// }
+			displayMenu(menu);
 
-		// // Display menu
-		// Arraylist<String> menu = new Arraylist<String>();
+			// try
+			// {
+			// 	auction = (Auction) objectIn.readObject();
+			// }
+			// catch(Exception e)
+			// {
+			// 	System.out.println(e);
+			// }
 
-		s.close();
+			// if (auction != null)
+			// {
+			// 	System.out.println(":)");
+			// }
+
+			// // Display menu
+			// Arraylist<String> menu = new Arraylist<String>();
+			
+			int i = scan.nextInt();
+		}
+		// s.close();
+	}
+
+	public static void displayMenu(ArrayList<String> menu)
+	{
+		for (int i = 0; i < menu.size(); i++)
+		{
+			System.out.println(menu.get(i));
+		}
 	}
 }
