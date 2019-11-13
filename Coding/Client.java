@@ -43,18 +43,65 @@ public class Client
 			System.out.println(i);
 			objectOut.writeInt(i);
 			objectOut.flush();
-
+			input.nextLine();
 			// Get input back
-			try
+			switch (i)
 			{
-				reply = objectIn.readUTF();
-			}
-			catch(Exception e)
-			{
-				System.out.println(e);
-			}
+				case 1:
+				{
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+					String username, password;
+					System.out.println("\nUsername: ");
+					username = input.nextLine();
+					objectOut.writeUTF(username);
+					
+					System.out.println("\nPassword: ");
+					password = input.nextLine();
+					objectOut.writeUTF(password);
 
-			System.out.println(reply);
+					objectOut.flush();
+
+					System.out.println("username: " + username);
+					System.out.println("password: " + password);
+					
+					break;
+				}
+
+				case 2:
+				{
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+					break;
+				}
+
+				case 3:
+				{
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+					break;
+				}
+
+				case 4:
+				{
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+					break;
+				}
+
+				case 5:
+				{
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+					break;
+				}
+
+				default:
+				{
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+				}
+			}
 
 			// dos.flush();
 			// bw.flush();

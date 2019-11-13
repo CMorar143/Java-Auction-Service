@@ -57,6 +57,15 @@ public class Server /*implements Runnable*/
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
+
+						String username, password;
+
+						username = objectIn.readUTF();
+						password = objectIn.readUTF();
+						
+						System.out.println("username: " + username);
+						System.out.println("password: " + password);
+						
 						break;
 					}
 
@@ -102,6 +111,7 @@ public class Server /*implements Runnable*/
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
+						break;
 					}
 				}
 
