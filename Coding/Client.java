@@ -60,11 +60,7 @@ public class Client
 					password = input.nextLine();
 					objectOut.writeUTF(password);
 
-					objectOut.flush();
-
-					System.out.println("username: " + username);
-					System.out.println("password: " + password);
-					
+					objectOut.flush();					
 					break;
 				}
 
