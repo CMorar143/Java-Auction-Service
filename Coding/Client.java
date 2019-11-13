@@ -32,8 +32,8 @@ public class Client
 		// DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 		int i = 0;
 
-		// do
-		// {
+		do
+		{
 			// System.out.println(menu);
 			displayMenu(menu);
 
@@ -64,7 +64,7 @@ public class Client
 			// {
 			// 	System.out.println(":)");
 			// }
-		// }while(i < 6);
+		}while(i < 6);
 		s.close();
 	}
 

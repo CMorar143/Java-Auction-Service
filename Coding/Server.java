@@ -23,7 +23,7 @@ public class Server /*implements Runnable*/
 		Auction auction = new Auction();
 		ArrayList<String> menu = auction.displayMenu();
 
-		// while(true)
+		while(true)
 		{
 			Socket s = ss.accept();
 			
@@ -41,10 +41,14 @@ public class Server /*implements Runnable*/
 			objectOut.writeObject(menu);
 
 			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+			int i = 0;
 
-			int i = objectIn.readInt();
-			// System.out.println("client chose : " + i);
-			System.out.println(i);
+			do
+			{
+				i = objectIn.readInt();
+				// System.out.println("client chose : " + i);
+				System.out.println(i);
+			}while(i < 6);
 			// objectOut.writeObject(auction);
 			// PrintWriter pr = new PrintWriter(s.getOutputStream());
 			// pr.println("test");
@@ -82,6 +86,6 @@ public class Server /*implements Runnable*/
 			// objectOut.flush();
 			s.close();
 		}
-		ss.close();
+		// ss.close();
 	}
 }
