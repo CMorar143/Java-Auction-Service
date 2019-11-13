@@ -23,7 +23,7 @@ public class Server /*implements Runnable*/
 		Auction auction = new Auction();
 		ArrayList<String> menu = auction.displayMenu();
 
-		while(true)
+		// while(true)
 		{
 			Socket s = ss.accept();
 			
@@ -32,13 +32,19 @@ public class Server /*implements Runnable*/
 			
 			System.out.println("client connected");
 			
-			// ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
-			// // InputStreamReader in = new InputStreamReader(s.getInputStream());
-			// // BufferedReader bf = new BufferedReader(in);
+			
+			// InputStreamReader in = new InputStreamReader(s.getInputStream());
+			// BufferedReader br = new BufferedReader(in);
+			// DataInputStream dis = new DataInputStream(s.getInputStream());
+			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 
-			// // String str = bf.readLine();
-			// // System.out.println("client : " + str);
+			objectOut.writeObject(menu);
 
+			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+
+			int i = objectIn.readInt();
+			// System.out.println("client chose : " + i);
+			System.out.println(i);
 			// objectOut.writeObject(auction);
 			// PrintWriter pr = new PrintWriter(s.getOutputStream());
 			// pr.println("test");
@@ -65,17 +71,17 @@ public class Server /*implements Runnable*/
    //              System.out.println(menu.get(i));
 			// }
 
-			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
+			// ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 			// InputStreamReader in = new InputStreamReader(s.getInputStream());
 			// BufferedReader bf = new BufferedReader(in);
 
 			// String str = bf.readLine();
 			// System.out.println("client : " + str);
 			// Display menu
-
-			objectOut.writeObject(menu);
+			
+			// objectOut.flush();
 			s.close();
 		}
-		// ss.close();
+		ss.close();
 	}
 }
