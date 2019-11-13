@@ -46,7 +46,13 @@ public class Auction implements Serializable
 
 	public void listAuctionItems()
 	{
-		
+		if (Items != null)
+		{
+			for (int i = 0; i < Items.size(); i++)
+			{
+				System.out.println(Items.get(i));
+			}
+		}
 	}
 
 	public void addItem(String name, float currentBid) 

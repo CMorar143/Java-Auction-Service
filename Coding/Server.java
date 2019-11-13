@@ -42,12 +42,69 @@ public class Server /*implements Runnable*/
 
 			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 			int i = 0;
+			String reply = null;
 
 			do
 			{
 				i = objectIn.readInt();
 				// System.out.println("client chose : " + i);
-				System.out.println(i);
+				// System.out.println(i);
+				switch (i)
+				{
+					case 1:
+					{
+						reply = "Coolio, enter your username and password";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+						break;
+					}
+
+					case 2:
+					{
+						reply = "You want to leave the auction";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+						break;
+					}
+
+					case 3:
+					{
+						reply = "You want to bid on an item";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+						break;
+					}
+
+					case 4:
+					{
+						reply = "You want to list auction items";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+						break;
+					}
+
+					case 5:
+					{
+						reply = "You want to create a new auction";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+						break;
+					}
+
+					default:
+					{
+						reply = "You entered invalid input";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+					}
+				}
+
 			}while(i < 6);
 			// objectOut.writeObject(auction);
 			// PrintWriter pr = new PrintWriter(s.getOutputStream());

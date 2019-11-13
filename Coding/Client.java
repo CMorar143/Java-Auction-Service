@@ -15,6 +15,8 @@ public class Client
 		Scanner input = new Scanner(System.in);
 		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+
+		String reply = null;
 		
 		// // OutputStreamWriter out = new OutputStreamWriter(s.getOutputStream());
 		// // BufferedWriter bw = new BufferedWriter(out);
@@ -41,6 +43,19 @@ public class Client
 			System.out.println(i);
 			objectOut.writeInt(i);
 			objectOut.flush();
+
+			// Get input back
+			try
+			{
+				reply = objectIn.readUTF();
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+
+			System.out.println(reply);
+
 			// dos.flush();
 			// bw.flush();
 			// String messageFromServer = bf.readLine();
