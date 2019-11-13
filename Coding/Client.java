@@ -15,7 +15,19 @@ public class Client
 		Scanner scan = new Scanner(System.in);
 		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
-		// while(true)
+		try
+		{
+			Object object = objectIn.readObject();
+			menu = (ArrayList<String>)object;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+
+		int i = 0;
+
+		do
 		{
 			// String messageFromServer = bf.readLine();
 			// if (bf.readLine() != null)
@@ -34,30 +46,15 @@ public class Client
 			// String str = bf.readLine();
 			// System.out.println("server : " + str);
 
-			// displayMenu(menu);
-
-			try
-			{
-				Object object = objectIn.readObject();
-                menu = (ArrayList<String>)object;
-			}
-			catch(Exception e)
-			{
-				System.out.println(e);
-			}
-
-			System.out.println(menu);
+			displayMenu(menu);
 
 			// if (auction != null)
 			// {
 			// 	System.out.println(":)");
 			// }
 
-			// // Display menu
-			// Arraylist<String> menu = new Arraylist<String>();
-
-			// int i = scan.nextInt();
-		}
+			i = scan.nextInt();
+		}while(i < 6);
 		// s.close();
 	}
 
