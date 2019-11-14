@@ -25,10 +25,25 @@ public class Auction implements Serializable
 
 	public void addClient(Client c)
 	{
-		Clients.add(c);
-		System.out.println(c.getUsername());
-		System.out.println(c.getPassword());
+		// First we ensure the client doesn't already exist in the list
+		int check = 0;
+		for (int i = 0; i < Clients.size(); i++)
+		{
+			String user = Clients.get(i).getUsername();
 
+			// If the client is already in the list
+			if (user.equals(c.getUsername()) == true)
+			{
+				check++;
+			}
+		}
+
+		if (check == 0)
+		{
+			Clients.add(c);
+			System.out.println(c.getUsername());
+			System.out.println(c.getPassword());
+		}
 		// Add client username and password to file (?)
 	}
 
