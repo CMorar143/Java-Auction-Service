@@ -4,6 +4,33 @@ import java.util.*;
 
 public class Client
 {
+	private String username;
+	private String password;
+
+	public static void displayMenu(ArrayList<String> menu)
+	{
+		for (int i = 0; i < menu.size(); i++)
+		{
+			System.out.println(menu.get(i));
+		}
+	}
+
+	public Client(String username, String password)
+	{
+		this.username = username;
+		this.password = password;
+	}
+
+	public String getUsername()
+	{
+		return this.username;
+	}
+
+	public String getPassword()
+	{
+		return this.password;
+	}
+
 	public static void main(String[] args) throws IOException
 	{
 		Auction auction = null;
@@ -124,13 +151,5 @@ public class Client
 			// }
 		}while(i < 6);
 		s.close();
-	}
-
-	public static void displayMenu(ArrayList<String> menu)
-	{
-		for (int i = 0; i < menu.size(); i++)
-		{
-			System.out.println(menu.get(i));
-		}
 	}
 }

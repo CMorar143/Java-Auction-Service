@@ -26,6 +26,8 @@ public class Auction implements Serializable
 	public void addClient(Client c)
 	{
 		Clients.add(c);
+		System.out.println(c.getUsername());
+		System.out.println(c.getPassword());
 
 		// Add client username and password to file (?)
 	}

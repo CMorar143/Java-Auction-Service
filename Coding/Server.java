@@ -65,7 +65,10 @@ public class Server /*implements Runnable*/
 
 						System.out.println("username: " + username);
 						System.out.println("password: " + password);
-						
+
+						Client c = new Client(username, password);
+						auction.addClient(c);
+
 						break;
 					}
 
@@ -75,6 +78,8 @@ public class Server /*implements Runnable*/
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
+
+						
 						break;
 					}
 
