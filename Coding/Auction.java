@@ -15,6 +15,22 @@ public class Auction implements Serializable
 		menu.add("3. Bid on Item");
 		menu.add("4. List Auction Items");
 		menu.add("5. Create a New Auction");
+
+		// Create 5 default auction items
+		Item item1 = new Item("Antique Chair", 45);
+		Items.add(item1);
+
+		Item item2 = new Item("Couch", 35);
+		Items.add(item2);
+
+		Item item3 = new Item("Antique Door", 30);
+		Items.add(item3);
+
+		Item item4 = new Item("Pots", 15);
+		Items.add(item4);
+
+		Item item5 = new Item("Bobble Head Collection", 60);
+		Items.add(item5);
 	}
 
 	// This should be in the server class
@@ -67,7 +83,8 @@ public class Auction implements Serializable
 		{
 			for (int i = 0; i < Items.size(); i++)
 			{
-				System.out.println(Items.get(i));
+				System.out.println("Item Name: " + Items.get(i).getItemName());
+				System.out.println("Current Bid: " + Items.get(i).getCurrentBid() + "\n");
 			}
 		}
 	}

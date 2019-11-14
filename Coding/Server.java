@@ -79,7 +79,7 @@ public class Server /*implements Runnable*/
 						objectOut.writeUTF(reply);
 						objectOut.flush();
 
-						
+
 						break;
 					}
 
@@ -89,6 +89,8 @@ public class Server /*implements Runnable*/
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
+
+						auction.listAuctionItems();
 						break;
 					}
 
