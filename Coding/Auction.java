@@ -70,11 +70,11 @@ public class Auction implements Serializable
 		// Remove client username and password from file (?)
 	}
 
-	public void placeBid(Item item, float bid, Client c)
+	public void placeBid(int itemNum, float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
-		item.setCurrentBid(bid);
-		item.setHighestBidder(c);
+		Items.get(itemNum-1).setCurrentBid(bid);
+		Items.get(itemNum-1).setHighestBidder(c);
 	}
 
 	public void listAuctionItems()
@@ -83,8 +83,9 @@ public class Auction implements Serializable
 		{
 			for (int i = 0; i < Items.size(); i++)
 			{
+				System.out.print(String.valueOf(i+1) + ". ");
 				System.out.println("Item Name: " + Items.get(i).getItemName());
-				System.out.println("Current Bid: " + Items.get(i).getCurrentBid() + "\n");
+				System.out.println("   Current Bid: " + Items.get(i).getCurrentBid() + "\n");
 			}
 		}
 	}

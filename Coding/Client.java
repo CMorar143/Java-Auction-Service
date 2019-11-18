@@ -67,7 +67,6 @@ public class Client
 			displayMenu(menu);
 
 			i = input.nextInt();
-			System.out.println(i);
 			objectOut.writeInt(i);
 			objectOut.flush();
 			input.nextLine();
@@ -102,6 +101,24 @@ public class Client
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
+					
+					try
+					{
+						Object object = objectIn.readObject();
+						auction = (Auction)object;
+					}
+					
+					catch(Exception e)
+					{
+						System.out.println(e);
+					}
+
+					auction.listAuctionItems();
+					int itemNum = input.nextInt();
+					objectOut.writeInt(itemNum);
+					objectOut.flush();
+					input.nextLine();
+
 					break;
 				}
 

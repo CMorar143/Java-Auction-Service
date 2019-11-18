@@ -26,7 +26,22 @@ public class Server /*implements Runnable*/
 		while(true)
 		{
 			Socket s = ss.accept();
+			String reply = null;
 			
+			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
+			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+
+			reply = "Enter your username and password\n";
+			System.out.println(reply);
+			objectOut.writeUTF(reply);
+			objectOut.flush();
+
+			String username, password;
+
+			username = objectIn.readUTF();
+			password = objectIn.readUTF();
+
+			Client c = new Client(username, password);
 			// OutputStreamWriter out = new OutputStreamWriter(s.getOutputStream());
 			// BufferedWriter bf = new BufferedWriter(out);
 			
@@ -36,13 +51,9 @@ public class Server /*implements Runnable*/
 			// InputStreamReader in = new InputStreamReader(s.getInputStream());
 			// BufferedReader br = new BufferedReader(in);
 			// DataInputStream dis = new DataInputStream(s.getInputStream());
-			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
-
 			objectOut.writeObject(menu);
 
-			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 			int i = 0;
-			String reply = null;
 
 			do
 			{
@@ -53,12 +64,10 @@ public class Server /*implements Runnable*/
 				{
 					case 1:
 					{
-						reply = "Coolio, enter your username and password";
+						reply = "Coolio, enter your username and password\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
-
-						String username, password;
 
 						username = objectIn.readUTF();
 						password = objectIn.readUTF();
@@ -66,7 +75,7 @@ public class Server /*implements Runnable*/
 						System.out.println("username: " + username);
 						System.out.println("password: " + password);
 
-						Client c = new Client(username, password);
+						// Client c = new Client(username, password);
 						auction.addClient(c);
 
 						break;
@@ -74,7 +83,7 @@ public class Server /*implements Runnable*/
 
 					case 2:
 					{
-						reply = "You want to leave the auction";
+						reply = "You want to leave the auction\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
@@ -85,18 +94,21 @@ public class Server /*implements Runnable*/
 
 					case 3:
 					{
-						reply = "You want to bid on an item";
+						reply = "Please choose which item number you would Like to bid on\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
 
-						auction.listAuctionItems();
+						objectOut.writeObject(auction);
+
+						int itemNum = objectIn.readInt();
+						// auction.listAuctionItems();
 						break;
 					}
 
 					case 4:
 					{
-						reply = "You want to list auction items";
+						reply = "You want to list auction items\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
@@ -105,7 +117,7 @@ public class Server /*implements Runnable*/
 
 					case 5:
 					{
-						reply = "You want to create a new auction";
+						reply = "You want to create a new auction\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
@@ -114,7 +126,7 @@ public class Server /*implements Runnable*/
 
 					default:
 					{
-						reply = "You entered invalid input";
+						reply = "You entered invalid input\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();

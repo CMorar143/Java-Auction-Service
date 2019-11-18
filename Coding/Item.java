@@ -2,7 +2,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Item
+public class Item implements Serializable
 {
 	private float currentBid;
 	private Client highestBidder;
