@@ -123,9 +123,9 @@ public class Client
 					System.out.println("What is the starting bid: ");
 					startingBid = input.nextFloat();
 
-					Item newItem = new Item(itemName, startingBid);
-
-					System.out.println(newItem.getItemName());
+					auction.addItem(itemName, startingBid);
+					objectOut.writeObject(auction);
+					auction.listAuctionItems();
 					break;
 				}
 

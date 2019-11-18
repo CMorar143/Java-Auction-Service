@@ -76,10 +76,24 @@ public class Server /*implements Runnable*/
 
 					case 2:
 					{
+
+						auction.listAuctionItems();
 						reply = "You want to create a new auction\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
+						try
+						{
+							Object object = objectIn.readObject();
+							auction = (Auction)object;
+						}
+						catch(Exception e)
+						{
+							System.out.println(e);
+						}
+
+						auction.listAuctionItems();
+						
 						break;
 					}
 
