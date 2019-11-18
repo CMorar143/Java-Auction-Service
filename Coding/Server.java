@@ -49,13 +49,14 @@ public class Server /*implements Runnable*/
 			objectOut.writeUTF(reply);
 			objectOut.flush();
 
-			objectOut.writeObject(auction);
+			// objectOut.writeObject(auction);
 			objectOut.writeObject(menu);
 
 			int i = 0;
 
 			do
 			{
+				// objectOut.writeObject(auction);
 				i = objectIn.readInt();
 				// System.out.println("client chose : " + i);
 				// System.out.println(i);
@@ -63,6 +64,7 @@ public class Server /*implements Runnable*/
 				{
 					case 1:
 					{
+						// objectOut.writeObject(auction);
 						reply = "Please choose which item number you would Like to bid on\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
@@ -70,30 +72,62 @@ public class Server /*implements Runnable*/
 
 						int itemNum = objectIn.readInt();
 						// auction.listAuctionItems();
-						System.out.println("You want to bid on " + itemNum);
+						// float currentBid = auction.getItemBid(itemNum);
+						reply = "What would you like to bid? (Must be greater than the current bid)\n";
+						System.out.println(reply);
+						objectOut.writeUTF(reply);
+						objectOut.flush();
+
+						float bid = objectIn.readFloat();
+						boolean bidPlaced = auction.placeBid(itemNum, bid, c);
+
+						if(bidPlaced)
+						{
+							reply = "Congrats you are now the highest bidder!\n";
+							System.out.println(reply);
+							objectOut.writeUTF(reply);
+							objectOut.flush();
+							auction.listAuctionItems();
+						}
+
+						else
+						{
+							reply = "That didn't work!\n";
+							System.out.println(reply);
+							objectOut.writeUTF(reply);
+							objectOut.flush();
+							auction.listAuctionItems();
+						}
+						objectOut.writeObject(auction);
+						// objectOut.writeObject(auction);
+						// int num = 0;
+						// objectOut.writeInt(num);
+						// objectOut.flush();
+						// input.nextLine();
+						// auction.listAuctionItems();
 						break;
 					}
 
 					case 2:
 					{
-
-						auction.listAuctionItems();
+						objectOut.writeObject(auction);
+						// auction.listAuctionItems();
 						reply = "You want to create a new auction\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
-						try
-						{
-							Object object = objectIn.readObject();
-							auction = (Auction)object;
-						}
-						catch(Exception e)
-						{
-							System.out.println(e);
-						}
-
+						// try {
+						// 	auction = (Auction) objectIn.readObject();
+						// } catch(Exception e) {
+						// 	System.out.println(e);
+						// }
+						String itemName = objectIn.readUTF();
+						float startingBid = objectIn.readFloat();
+						auction.addItem(itemName, startingBid);
+						// objectOut.writeObject(auction);
 						auction.listAuctionItems();
-						
+						System.out.println("test2 should be above!\n");
+						objectOut.writeObject(auction);
 						break;
 					}
 
@@ -114,7 +148,7 @@ public class Server /*implements Runnable*/
 						objectOut.flush();
 					}
 				}
-
+				// objectOut.writeObject(auction);
 			}while(i < 6);
 			// objectOut.writeObject(auction);
 			// PrintWriter pr = new PrintWriter(s.getOutputStream());

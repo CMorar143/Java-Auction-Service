@@ -69,11 +69,22 @@ public class Auction implements Serializable
 		// Remove client username and password from file (?)
 	}
 
-	public void placeBid(int itemNum, float bid, Client c)
+	public boolean placeBid(int itemNum, float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
-		Items.get(itemNum-1).setCurrentBid(bid);
-		Items.get(itemNum-1).setHighestBidder(c);
+		float currentBid = Items.get(itemNum-1).getCurrentBid();
+
+		if (bid > currentBid)
+		{
+			Items.get(itemNum-1).setCurrentBid(bid);
+			Items.get(itemNum-1).setHighestBidder(c);
+			return true;
+		}
+
+		else
+		{
+			return false;
+		}
 	}
 
 	public void listAuctionItems()

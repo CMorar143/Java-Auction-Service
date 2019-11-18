@@ -2,7 +2,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class Client
+public class Client implements Serializable
 {
 	private String username;
 	private String password;
@@ -58,26 +58,21 @@ public class Client
 		reply = objectIn.readUTF();
 		System.out.println(reply);
 
-		try
-		{
-			Object object = objectIn.readObject();
-			auction = (Auction)object;
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
+		// try
+		// {
+		// 	auction = (Auction) objectIn.readObject();
+		// }
+		// catch(Exception e)
+		// {
+		// 	System.out.println(e);
+		// }
+		
+		// auction.listAuctionItems();
+		// System.out.println("\n");
 
-		auction.listAuctionItems();
-		System.out.println("\n");
-
-		try
-		{
-			Object object = objectIn.readObject();
-			menu = (ArrayList<String>)object;
-		}
-		catch(Exception e)
-		{
+		try {
+			menu = (ArrayList<String>) objectIn.readObject();
+		} catch(Exception e) {
 			System.out.println(e);
 		}
 
@@ -85,6 +80,15 @@ public class Client
 
 		do
 		{
+			// auction = null;
+			// try {
+			// 	auction = (Auction) objectIn.readObject();
+			// } catch(Exception e) {
+			// 	System.out.println(e);
+			// }
+			// auction.listAuctionItems();
+			// System.out.println("\n");
+			
 			displayMenu(menu);
 
 			i = input.nextInt();
@@ -97,21 +101,60 @@ public class Client
 				// Make a bid
 				case 1:
 				{
+					// try {
+					// 	auction = (Auction) objectIn.readObject();
+					// 	System.out.println("Reassigned in 1 start!\n");				
+					// } catch(Exception e) {
+					// 	System.out.println(e);
+					// }
+					// auction.listAuctionItems();
+					System.out.println("\n");
+					
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 
-					auction.listAuctionItems();
+					// auction.listAuctionItems();
 					int itemNum = input.nextInt();
 					objectOut.writeInt(itemNum);
 					objectOut.flush();
 					input.nextLine();
 
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+
+					float bid = input.nextFloat();
+					objectOut.writeFloat(bid);
+					objectOut.flush();
+					input.nextLine();
+
+					reply = objectIn.readUTF();
+					System.out.println(reply);
+
+					try {
+						auction = (Auction) objectIn.readObject();
+						System.out.println("Reassigned in 1 end!\n");				
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+
+					// boolean bidPlaced = auction.placeBid(itemNum, bid, null);
+					// System.out.println(bidPlaced);
+					// int num = objectIn.readInt();
+					// System.out.println(num);
+					auction.listAuctionItems();
 					break;
 				}
 
 				// Add new item for auction
 				case 2:
 				{
+					try {
+						auction = (Auction) objectIn.readObject();
+						System.out.println("Reassigned in 2 start!\n");				
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 					String itemName = null;
@@ -123,9 +166,28 @@ public class Client
 					System.out.println("What is the starting bid: ");
 					startingBid = input.nextFloat();
 
-					auction.addItem(itemName, startingBid);
-					objectOut.writeObject(auction);
-					auction.listAuctionItems();
+					objectOut.writeUTF(itemName);
+					objectOut.writeFloat(startingBid);
+					objectOut.flush();
+					input.nextLine();
+
+					// auction.addItem(itemName, startingBid);
+					// objectOut.writeObject(auction);
+					// try {
+					// 	auction = (Auction) objectIn.readObject();
+					// } catch(Exception e) {
+					// 	System.out.println(e);
+					// }
+
+					// System.out.println("Below should be new!\n");
+					// auction.listAuctionItems();
+					try {
+						auction = (Auction) objectIn.readObject();
+						System.out.println("Reassigned in 2 end!\n");				
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+
 					break;
 				}
 
@@ -143,30 +205,7 @@ public class Client
 					System.out.println(reply);
 				}
 			}
-
-			// dos.flush();
-			// bw.flush();
-			// String messageFromServer = bf.readLine();
-			// if (bf.readLine() != null)
-			// 	System.out.println(messageFromServer + "\n");
-
-			// // Display Menu
-			// for (int i = 0; i < 5; i++)
-			// {
-			// 	// if (bf.readLine() != null)
-			// 	{
-			// 		String menuItem = bf.readLine();
-			// 		menu.add(menuItem);
-			// 	}
-			// }
-
-			// String str = bf.readLine();
-			// System.out.println("server : " + str);
-
-			// if (auction != null)
-			// {
-			// 	System.out.println(":)");
-			// }
+			System.out.println("\n\n");
 		}while(i < 6);
 		s.close();
 	}
