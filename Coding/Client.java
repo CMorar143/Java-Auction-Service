@@ -81,12 +81,10 @@ public class Client
 			System.out.println(e);
 		}
 
-		// DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 		int i = 0;
 
 		do
 		{
-			// System.out.println(menu);
 			displayMenu(menu);
 
 			i = input.nextInt();
@@ -116,6 +114,18 @@ public class Client
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
+					String itemName = null;
+					float startingBid = 0;
+
+					System.out.println("What would you like to auction: ");
+					itemName = input.nextLine();
+
+					System.out.println("What is the starting bid: ");
+					startingBid = input.nextFloat();
+
+					Item newItem = new Item(itemName, startingBid);
+
+					System.out.println(newItem.getItemName());
 					break;
 				}
 
