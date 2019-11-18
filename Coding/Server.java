@@ -27,7 +27,7 @@ public class Server /*implements Runnable*/
 		{
 			Socket s = ss.accept();
 			String reply = null;
-			
+			System.out.println("client accepted");
 			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
@@ -37,20 +37,19 @@ public class Server /*implements Runnable*/
 			objectOut.flush();
 
 			String username, password;
-
 			username = objectIn.readUTF();
 			password = objectIn.readUTF();
 
 			Client c = new Client(username, password);
-			// OutputStreamWriter out = new OutputStreamWriter(s.getOutputStream());
-			// BufferedWriter bf = new BufferedWriter(out);
 			
-			System.out.println("client connected");
-			
-			
-			// InputStreamReader in = new InputStreamReader(s.getInputStream());
-			// BufferedReader br = new BufferedReader(in);
-			// DataInputStream dis = new DataInputStream(s.getInputStream());
+			System.out.println("client added to auction");
+
+			reply = "\n\nThese are the items currently on auction\n";
+			System.out.println(reply);
+			objectOut.writeUTF(reply);
+			objectOut.flush();
+
+			objectOut.writeObject(auction);
 			objectOut.writeObject(menu);
 
 			int i = 0;
@@ -64,60 +63,29 @@ public class Server /*implements Runnable*/
 				{
 					case 1:
 					{
-						reply = "Coolio, enter your username and password\n";
-						System.out.println(reply);
-						objectOut.writeUTF(reply);
-						objectOut.flush();
-
-						username = objectIn.readUTF();
-						password = objectIn.readUTF();
-
-						System.out.println("username: " + username);
-						System.out.println("password: " + password);
-
-						// Client c = new Client(username, password);
-						auction.addClient(c);
-
-						break;
-					}
-
-					case 2:
-					{
-						reply = "You want to leave the auction\n";
-						System.out.println(reply);
-						objectOut.writeUTF(reply);
-						objectOut.flush();
-
-
-						break;
-					}
-
-					case 3:
-					{
 						reply = "Please choose which item number you would Like to bid on\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
 
-						objectOut.writeObject(auction);
-
 						int itemNum = objectIn.readInt();
 						// auction.listAuctionItems();
+						System.out.println("You want to bid on " + itemNum);
 						break;
 					}
 
-					case 4:
+					case 2:
 					{
-						reply = "You want to list auction items\n";
+						reply = "You want to create a new auction\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
 						break;
 					}
 
-					case 5:
+					case 3:
 					{
-						reply = "You want to create a new auction\n";
+						reply = "You want to leave auction\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();

@@ -37,16 +37,39 @@ public class Client
 		Socket s = new Socket("localhost", 4999);
 		ArrayList<String> menu = null;
 
-		// InputStreamReader in = new InputStreamReader(s.getInputStream());
-		// BufferedReader bf = new BufferedReader(in);
 		Scanner input = new Scanner(System.in);
 		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
 		String reply = null;
+		reply = objectIn.readUTF();
+		System.out.println(reply);
+
+		String username, password;
+		System.out.println("Username: ");
+		username = input.nextLine();
+		objectOut.writeUTF(username);
 		
-		// // OutputStreamWriter out = new OutputStreamWriter(s.getOutputStream());
-		// // BufferedWriter bw = new BufferedWriter(out);
+		System.out.println("\nPassword: ");
+		password = input.nextLine();
+		objectOut.writeUTF(password);
+		objectOut.flush();
+
+		reply = objectIn.readUTF();
+		System.out.println(reply);
+
+		try
+		{
+			Object object = objectIn.readObject();
+			auction = (Auction)object;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+
+		auction.listAuctionItems();
+		System.out.println("\n");
 
 		try
 		{
@@ -73,45 +96,11 @@ public class Client
 			// Get input back
 			switch (i)
 			{
+				// Make a bid
 				case 1:
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
-					String username, password;
-					System.out.println("\nUsername: ");
-					username = input.nextLine();
-					objectOut.writeUTF(username);
-					
-					System.out.println("\nPassword: ");
-					password = input.nextLine();
-					objectOut.writeUTF(password);
-
-					objectOut.flush();					
-					break;
-				}
-
-				case 2:
-				{
-					reply = objectIn.readUTF();
-					System.out.println(reply);
-					break;
-				}
-
-				case 3:
-				{
-					reply = objectIn.readUTF();
-					System.out.println(reply);
-					
-					try
-					{
-						Object object = objectIn.readObject();
-						auction = (Auction)object;
-					}
-					
-					catch(Exception e)
-					{
-						System.out.println(e);
-					}
 
 					auction.listAuctionItems();
 					int itemNum = input.nextInt();
@@ -122,14 +111,16 @@ public class Client
 					break;
 				}
 
-				case 4:
+				// Add new item for auction
+				case 2:
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 					break;
 				}
 
-				case 5:
+				// Leave auction
+				case 3:
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
