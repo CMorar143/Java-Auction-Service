@@ -14,7 +14,6 @@ public class Auction implements Serializable
 		{
 			// Announce winner of auction and move onto next item
 			System.out.println("test");
-			AnnounceWinner();
 		}
 	};
 
@@ -159,7 +158,7 @@ public class Auction implements Serializable
 	public void startTimer()
 	{
 		// timer.scheduleAtFixedRate(task, 0, 6000);
-		timer.schedule(task, 6000);
+		// timer.schedule(task, 6000);
 	}
 
 	public void getTimeRemaining()
