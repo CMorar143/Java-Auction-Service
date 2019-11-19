@@ -54,26 +54,25 @@ public class Client implements Serializable
 		objectOut.writeUTF(password);
 		objectOut.flush();
 
-		reply = objectIn.readUTF();
-		System.out.println(reply);
-
-		// try
-		// {
-		// 	auction = (Auction) objectIn.readObject();
-		// }
-		// catch(Exception e)
-		// {
-		// 	System.out.println(e);
-		// }
-		
-		// auction.listAuctionItems();
-		// System.out.println("\n");
-
 		try {
 			menu = (ArrayList<String>) objectIn.readObject();
 		} catch(Exception e) {
 			System.out.println(e);
 		}
+
+		Item item = null;
+
+		System.out.println("\n");
+		try {
+			item = (Item) objectIn.readObject();
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		System.out.println("The item currently on sale is:\n");
+		System.out.println("Item Name: " + item.getItemName());
+		System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
+		System.out.println("print timer here");
 
 		int i = 0;
 
@@ -93,7 +92,7 @@ public class Client implements Serializable
 				// Make a bid
 				case 1:
 				{
-					Item item = null;
+					item = null;
 
 					System.out.println("\n");
 					try {
@@ -104,7 +103,7 @@ public class Client implements Serializable
 
 					System.out.println("The item currently on sale is:\n");
 					System.out.println("Item Name: " + item.getItemName());
-					System.out.println("   Current Bid: " + item.getCurrentBid() + "\n");
+					System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
 					System.out.println("print timer here");
 
 					// reply = objectIn.readUTF();

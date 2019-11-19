@@ -44,13 +44,10 @@ public class Server /*implements Runnable*/
 			
 			System.out.println("client added to auction");
 
-			reply = "\n\nThese are the items currently on auction\n";
-			System.out.println(reply);
-			objectOut.writeUTF(reply);
-			objectOut.flush();
-
-			// objectOut.writeObject(auction);
 			objectOut.writeObject(menu);
+
+			Item item = auction.auctionItem();
+			objectOut.writeObject(item);
 
 			int i = 0;
 
@@ -65,7 +62,7 @@ public class Server /*implements Runnable*/
 						objectOut.flush();
 						objectOut.reset();
 						// Send item infor thats on sale
-						Item item = auction.auctionItem();
+						item = auction.auctionItem();
 						objectOut.writeObject(item);
 						reply = "What would you like to bid? (Must be greater than the current bid)\n";
 						System.out.println(reply);
