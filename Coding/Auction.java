@@ -7,6 +7,14 @@ public class Auction implements Serializable
 	private ArrayList<Item> Items = new ArrayList<Item>();
 	private ArrayList<Client> Clients = new ArrayList<Client>();
 	private ArrayList<String> menu = new ArrayList<String>();
+	Timer timer = new Timer();
+	TimerTask task = new TimerTask() {
+		public void run()
+		{
+			// Announce winner of auction and move onto next item
+			System.out.println("test");
+		}
+	};
 
 	public Auction()
 	{
@@ -78,6 +86,8 @@ public class Auction implements Serializable
 		{
 			Items.get(0).setCurrentBid(bid);
 			Items.get(0).setHighestBidder(c);
+			// Reset the timer
+
 			return true;
 		}
 
@@ -109,5 +119,10 @@ public class Auction implements Serializable
 	public Item auctionItem()
 	{
 		return Items.get(0);
+	}
+
+	public void startTimer()
+	{
+		timer.scheduleAtFixedRate(task, 0, 10000);
 	}
 }

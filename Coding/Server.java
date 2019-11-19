@@ -31,6 +31,8 @@ public class Server /*implements Runnable*/
 			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
+			auction.startTimer();
+
 			reply = "Enter your username and password\n";
 			System.out.println(reply);
 			objectOut.writeUTF(reply);
