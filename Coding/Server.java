@@ -56,30 +56,22 @@ public class Server /*implements Runnable*/
 
 			do
 			{
-				// objectOut.writeObject(auction);
 				i = objectIn.readInt();
-				// System.out.println("client chose : " + i);
-				// System.out.println(i);
+
 				switch (i)
 				{
 					case 1:
 					{
-						// objectOut.writeObject(auction);
-						reply = "Please choose which item number you would Like to bid on\n";
-						System.out.println(reply);
-						objectOut.writeUTF(reply);
-						objectOut.flush();
-
-						int itemNum = objectIn.readInt();
-						// auction.listAuctionItems();
-						// float currentBid = auction.getItemBid(itemNum);
+						// Send item infor thats on sale
+						Item item = auction.auctionItem(0);
+						objectOut.writeObject(item);
 						reply = "What would you like to bid? (Must be greater than the current bid)\n";
 						System.out.println(reply);
 						objectOut.writeUTF(reply);
 						objectOut.flush();
 
 						float bid = objectIn.readFloat();
-						boolean bidPlaced = auction.placeBid(itemNum, bid, c);
+						boolean bidPlaced = auction.placeBid(bid, c);
 
 						if(bidPlaced)
 						{
@@ -87,7 +79,7 @@ public class Server /*implements Runnable*/
 							System.out.println(reply);
 							objectOut.writeUTF(reply);
 							objectOut.flush();
-							auction.listAuctionItems();
+							// auction.auctionItem();
 						}
 
 						else
@@ -96,21 +88,21 @@ public class Server /*implements Runnable*/
 							System.out.println(reply);
 							objectOut.writeUTF(reply);
 							objectOut.flush();
-							auction.listAuctionItems();
+							// auction.auctionItem();
 						}
-						objectOut.writeObject(auction);
-						// objectOut.writeObject(auction);
 						// int num = 0;
 						// objectOut.writeInt(num);
 						// objectOut.flush();
 						// input.nextLine();
 						// auction.listAuctionItems();
+
+						item = auction.auctionItem(1);
+						objectOut.writeObject(item);
 						break;
 					}
 
 					case 2:
 					{
-						objectOut.writeObject(auction);
 						// auction.listAuctionItems();
 						reply = "You want to create a new auction\n";
 						System.out.println(reply);
@@ -127,7 +119,6 @@ public class Server /*implements Runnable*/
 						// objectOut.writeObject(auction);
 						auction.listAuctionItems();
 						System.out.println("test2 should be above!\n");
-						objectOut.writeObject(auction);
 						break;
 					}
 

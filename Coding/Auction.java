@@ -11,8 +11,8 @@ public class Auction implements Serializable
 	public Auction()
 	{
 		menu.add("Please choose what you would like to do");
-		menu.add("1. Bid on Item");
-		menu.add("2. Create a New Auction");
+		menu.add("1. Bid On The Item");
+		menu.add("2. Create A New Auction");
 		menu.add("3. Leave Auction");
 
 		// Create 5 default auction items
@@ -69,15 +69,15 @@ public class Auction implements Serializable
 		// Remove client username and password from file (?)
 	}
 
-	public boolean placeBid(int itemNum, float bid, Client c)
+	public boolean placeBid(float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
-		float currentBid = Items.get(itemNum-1).getCurrentBid();
+		float currentBid = Items.get(0).getCurrentBid();
 
 		if (bid > currentBid)
 		{
-			Items.get(itemNum-1).setCurrentBid(bid);
-			Items.get(itemNum-1).setHighestBidder(c);
+			Items.get(0).setCurrentBid(bid);
+			Items.get(0).setHighestBidder(c);
 			return true;
 		}
 
@@ -104,5 +104,15 @@ public class Auction implements Serializable
 	{
 		Item newItem = new Item(name, currentBid);
 		Items.add(newItem);
+	}
+
+	public Item auctionItem(int num)
+	{
+		// Item item = Items.get(0);
+		// System.out.println("The item currently on sale is:\n");
+		// System.out.println("Item Name: " + Items.get(0).getItemName());
+		// System.out.println("   Current Bid: " + Items.get(0).getCurrentBid() + "\n");
+		// System.out.println("print timer here");
+		return Items.get(num);
 	}
 }

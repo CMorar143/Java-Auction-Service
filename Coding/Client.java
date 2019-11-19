@@ -33,7 +33,6 @@ public class Client implements Serializable
 
 	public static void main(String[] args) throws IOException
 	{
-		Auction auction = null;
 		Socket s = new Socket("localhost", 4999);
 		ArrayList<String> menu = null;
 
@@ -80,15 +79,8 @@ public class Client implements Serializable
 
 		do
 		{
-			// auction = null;
-			// try {
-			// 	auction = (Auction) objectIn.readObject();
-			// } catch(Exception e) {
-			// 	System.out.println(e);
-			// }
-			// auction.listAuctionItems();
-			// System.out.println("\n");
-			
+			// Display item thats on sale
+			System.out.println("\n");
 			displayMenu(menu);
 
 			i = input.nextInt();
@@ -101,23 +93,25 @@ public class Client implements Serializable
 				// Make a bid
 				case 1:
 				{
-					// try {
-					// 	auction = (Auction) objectIn.readObject();
-					// 	System.out.println("Reassigned in 1 start!\n");				
-					// } catch(Exception e) {
-					// 	System.out.println(e);
-					// }
-					// auction.listAuctionItems();
+					Item item = null;
+
 					System.out.println("\n");
-					
-					reply = objectIn.readUTF();
-					System.out.println(reply);
+					try {
+						item = (Item) objectIn.readObject();
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+
+					System.out.println(item.getItemName());
+
+					// reply = objectIn.readUTF();
+					// System.out.println(reply);
 
 					// auction.listAuctionItems();
-					int itemNum = input.nextInt();
-					objectOut.writeInt(itemNum);
-					objectOut.flush();
-					input.nextLine();
+					// int itemNum = input.nextInt();
+					// objectOut.writeInt(itemNum);
+					// objectOut.flush();
+					// input.nextLine();
 
 					reply = objectIn.readUTF();
 					System.out.println(reply);
@@ -129,32 +123,20 @@ public class Client implements Serializable
 
 					reply = objectIn.readUTF();
 					System.out.println(reply);
-
+					
 					try {
-						auction = (Auction) objectIn.readObject();
-						System.out.println("Reassigned in 1 end!\n");				
+						item = (Item) objectIn.readObject();
 					} catch(Exception e) {
 						System.out.println(e);
 					}
 
-					// boolean bidPlaced = auction.placeBid(itemNum, bid, null);
-					// System.out.println(bidPlaced);
-					// int num = objectIn.readInt();
-					// System.out.println(num);
-					auction.listAuctionItems();
+					System.out.println(item.getItemName());
 					break;
 				}
 
 				// Add new item for auction
 				case 2:
 				{
-					try {
-						auction = (Auction) objectIn.readObject();
-						System.out.println("Reassigned in 2 start!\n");				
-					} catch(Exception e) {
-						System.out.println(e);
-					}
-
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 					String itemName = null;
@@ -170,23 +152,6 @@ public class Client implements Serializable
 					objectOut.writeFloat(startingBid);
 					objectOut.flush();
 					input.nextLine();
-
-					// auction.addItem(itemName, startingBid);
-					// objectOut.writeObject(auction);
-					// try {
-					// 	auction = (Auction) objectIn.readObject();
-					// } catch(Exception e) {
-					// 	System.out.println(e);
-					// }
-
-					// System.out.println("Below should be new!\n");
-					// auction.listAuctionItems();
-					try {
-						auction = (Auction) objectIn.readObject();
-						System.out.println("Reassigned in 2 end!\n");				
-					} catch(Exception e) {
-						System.out.println(e);
-					}
 
 					break;
 				}
