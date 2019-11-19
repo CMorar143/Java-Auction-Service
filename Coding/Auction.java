@@ -106,13 +106,8 @@ public class Auction implements Serializable
 		Items.add(newItem);
 	}
 
-	public Item auctionItem(int num)
+	public Item auctionItem()
 	{
-		// Item item = Items.get(0);
-		// System.out.println("The item currently on sale is:\n");
-		// System.out.println("Item Name: " + Items.get(0).getItemName());
-		// System.out.println("   Current Bid: " + Items.get(0).getCurrentBid() + "\n");
-		// System.out.println("print timer here");
-		return Items.get(num);
+		return Items.get(0);
 	}
 }

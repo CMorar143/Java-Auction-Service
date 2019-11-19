@@ -62,8 +62,10 @@ public class Server /*implements Runnable*/
 				{
 					case 1:
 					{
+						objectOut.flush();
+						objectOut.reset();
 						// Send item infor thats on sale
-						Item item = auction.auctionItem(0);
+						Item item = auction.auctionItem();
 						objectOut.writeObject(item);
 						reply = "What would you like to bid? (Must be greater than the current bid)\n";
 						System.out.println(reply);
@@ -95,9 +97,6 @@ public class Server /*implements Runnable*/
 						// objectOut.flush();
 						// input.nextLine();
 						// auction.listAuctionItems();
-
-						item = auction.auctionItem(1);
-						objectOut.writeObject(item);
 						break;
 					}
 

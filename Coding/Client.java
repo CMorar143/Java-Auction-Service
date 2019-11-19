@@ -102,7 +102,10 @@ public class Client implements Serializable
 						System.out.println(e);
 					}
 
-					System.out.println(item.getItemName());
+					System.out.println("The item currently on sale is:\n");
+					System.out.println("Item Name: " + item.getItemName());
+					System.out.println("   Current Bid: " + item.getCurrentBid() + "\n");
+					System.out.println("print timer here");
 
 					// reply = objectIn.readUTF();
 					// System.out.println(reply);
@@ -123,14 +126,6 @@ public class Client implements Serializable
 
 					reply = objectIn.readUTF();
 					System.out.println(reply);
-					
-					try {
-						item = (Item) objectIn.readObject();
-					} catch(Exception e) {
-						System.out.println(e);
-					}
-
-					System.out.println(item.getItemName());
 					break;
 				}
 
