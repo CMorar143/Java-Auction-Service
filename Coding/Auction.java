@@ -14,6 +14,7 @@ public class Auction implements Serializable
 		{
 			// Announce winner of auction and move onto next item
 			System.out.println("test");
+			AnnounceWinner();
 		}
 	};
 
@@ -136,6 +137,12 @@ public class Auction implements Serializable
 				System.out.println("   Current Bid: " + Items.get(i).getCurrentBid() + "\n");
 			}
 		}
+	}
+
+	public void AnnounceWinner()
+	{
+		Item item = auctionItem();
+		System.out.println("winner declared here" + item.getHighestBidder().getUsername());
 	}
 
 	public void addItem(String name, float currentBid) 
