@@ -32,6 +32,7 @@ public class Server /*implements Runnable*/
 			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
 			auction.startTimer();
+			auction.getTimeRemaining();
 
 			reply = "Enter your username and password\n";
 			System.out.println(reply);
@@ -43,8 +44,11 @@ public class Server /*implements Runnable*/
 			password = objectIn.readUTF();
 
 			Client c = new Client(username, password);
-			
-			System.out.println("client added to auction");
+			boolean clientAdded = auction.addClient(c);
+			if(clientAdded)
+			{
+				System.out.println("client added to auction");
+			}
 
 			objectOut.writeObject(menu);
 
@@ -80,7 +84,7 @@ public class Server /*implements Runnable*/
 							System.out.println(reply);
 							objectOut.writeUTF(reply);
 							objectOut.flush();
-							// auction.auctionItem();
+							// auction.stopTimers();
 						}
 
 						else
@@ -89,13 +93,8 @@ public class Server /*implements Runnable*/
 							System.out.println(reply);
 							objectOut.writeUTF(reply);
 							objectOut.flush();
-							// auction.auctionItem();
 						}
-						// int num = 0;
-						// objectOut.writeInt(num);
-						// objectOut.flush();
-						// input.nextLine();
-						// auction.listAuctionItems();
+	
 						break;
 					}
 

@@ -8,11 +8,35 @@ public class Auction implements Serializable
 	private ArrayList<Client> Clients = new ArrayList<Client>();
 	private ArrayList<String> menu = new ArrayList<String>();
 	Timer timer = new Timer();
+	Timer timeLeft = new Timer();
 	TimerTask task = new TimerTask() {
 		public void run()
 		{
 			// Announce winner of auction and move onto next item
 			System.out.println("test");
+		}
+	};
+
+	TimerTask getTime = new TimerTask()
+	{
+		int seconds = 6;
+		int i = 0;
+		
+		@Override
+		public void run()
+		{
+			i++;
+
+			if(i % seconds == 0)
+			{
+				System.out.println("Timer action!");
+				timeLeft.cancel();
+			}
+
+			else
+			{
+				System.out.println("Time left:" + (seconds - (i %seconds)) );
+			}
 		}
 	};
 
@@ -46,7 +70,7 @@ public class Auction implements Serializable
 		return menu;
 	}
 
-	public void addClient(Client c)
+	public boolean addClient(Client c)
 	{
 		// First we ensure the client doesn't already exist in the list
 		int check = 0;
@@ -64,8 +88,12 @@ public class Auction implements Serializable
 		if (check == 0)
 		{
 			Clients.add(c);
-			System.out.println(c.getUsername());
-			System.out.println(c.getPassword());
+			return true;
+		}
+
+		else
+		{
+			return false;
 		}
 		// Add client username and password to file (?)
 	}
@@ -123,6 +151,18 @@ public class Auction implements Serializable
 
 	public void startTimer()
 	{
-		timer.scheduleAtFixedRate(task, 0, 10000);
+		// timer.scheduleAtFixedRate(task, 0, 6000);
+		timer.schedule(task, 6000);
+	}
+
+	public void getTimeRemaining()
+	{
+		timeLeft.schedule(getTime, 0, 1000);
+	}
+
+	public void stopTimers()
+	{
+		timer.cancel();
+		timeLeft.cancel();
 	}
 }
