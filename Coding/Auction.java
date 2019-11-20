@@ -143,7 +143,7 @@ public class Auction implements Serializable
 		Item item = auctionItem();
 		if (item.getHighestBidder() != null)
 		{
-			System.out.println("winner declared here" + item.getHighestBidder().getUsername());
+			System.out.println("winner declared here " + item.getHighestBidder().getUsername());
 		}
 
 		else

@@ -89,7 +89,7 @@ public class ClientHandler implements Runnable
                 // MyTimerTask task = new MyTimerTask(auction);
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(new MyTimerTask(auction), 8000);
+                    timer.schedule(new MyTimerTask(auction), 8000, 8000);
                     checkTimer.scheduleAtFixedRate(new CheckTime(), 0, 1000);
                     MyTimerTask.hasStarted = true;
                 }
@@ -128,7 +128,7 @@ public class ClientHandler implements Runnable
                                 
                                 timer = new Timer();
                                 // checkTimer = new Timer();
-                                timer.schedule(new MyTimerTask(auction), 8000);
+                                timer.schedule(new MyTimerTask(auction), 8000, 8000);
                                 
                                 CheckTime.num2 = 0;
 
