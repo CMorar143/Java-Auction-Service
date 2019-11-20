@@ -145,6 +145,11 @@ public class Auction implements Serializable
 		{
 			System.out.println("winner declared here" + item.getHighestBidder().getUsername());
 		}
+
+		else
+		{
+			System.out.println("No winner\n");
+		}
 		Items.remove(item);
 		// System.out.println("winner declared here");
 	}

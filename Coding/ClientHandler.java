@@ -55,7 +55,7 @@ public class ClientHandler implements Runnable
                 // MyTimerTask task = new MyTimerTask(auction);
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(new MyTimerTask(auction), 60000);
+                    timer.schedule(new MyTimerTask(auction), 8000);
                     // checkTimer.schedule(check, 0, 1000);
                 }
                 
@@ -123,7 +123,7 @@ public class ClientHandler implements Runnable
                                 timer.cancel();
                                 timer = new Timer();
                                 // task = new MyTimerTask(auction);
-                                timer.schedule(new MyTimerTask(auction), 6000);
+                                timer.schedule(new MyTimerTask(auction), 8000);
                                 System.out.println("got here (new timer)");
                                 // auction.stopTimers();
                             }
@@ -184,7 +184,7 @@ public class ClientHandler implements Runnable
                 s.close();
                 // ss.close();
             }
-            catch (IOException e) { 
+            catch (IOException e) {
                 e.printStackTrace(); 
             }
         }
@@ -204,6 +204,7 @@ public class ClientHandler implements Runnable
     {
         private Item item;
         final Auction auction;
+        private static int checker = 0;
         private static boolean isFinished = false;
         private static boolean hasStarted = false;
 
@@ -220,7 +221,8 @@ public class ClientHandler implements Runnable
             // Announce winner of auction and move onto next item
             System.out.println("you entered the other timer class");
             auctionNextItem();
-            System.out.println("passed auction next()");
+            System.out.println("passed auction next(" + String.valueOf(checker) + ")");
+            checker++;
             isFinished = true;
         }
 
