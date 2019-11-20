@@ -81,7 +81,7 @@ public class Auction implements Serializable
 			// If the client is already in the list
 			if (user.equals(c.getUsername()) == true)
 			{
-				check++;
+				check = 1;
 			}
 		}
 
