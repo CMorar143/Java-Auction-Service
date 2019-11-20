@@ -32,7 +32,7 @@ public class ClientHandler implements Runnable
     final ObjectOutputStream objectOut; 
     final Socket s;
     final Auction auction;
-    boolean fact;
+    private boolean exit;
     final ArrayList<String> menu;
 
     // Constructor 
@@ -43,15 +43,20 @@ public class ClientHandler implements Runnable
         this.objectIn = objectIn;
         this.objectOut = objectOut;
         menu = auction.displayMenu();
-        fact = true;
+        exit = false;
+    }
+
+    public void stop()
+    {
+        exit = true;
     }
 
     @Override
     public void run()  
     { 
         String reply; 
-        while (fact)  
-        { 
+        while (!exit)  
+        {
             try 
             {
                 // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
@@ -124,15 +129,12 @@ public class ClientHandler implements Runnable
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
                                 timer.cancel();
-                                // checkTimer.cancel();
                                 
                                 timer = new Timer();
-                                // checkTimer = new Timer();
                                 timer.schedule(new MyTimerTask(auction), 8000, 8000);
                                 
                                 CheckTime.num2 = 0;
 
-                                // checkTimer.schedule(new CheckTime(), 0, 1000);
                                 System.out.println("got here (new timer)");
                                 // auction.stopTimers();
                             }
@@ -175,6 +177,7 @@ public class ClientHandler implements Runnable
                             System.out.println(reply);
                             objectOut.writeUTF(reply);
                             objectOut.flush();
+                            this.stop();
                             this.s.close();
                             break;
                         }
@@ -188,7 +191,7 @@ public class ClientHandler implements Runnable
                         }
                     }
                     // objectOut.writeObject(auction);
-                }while(i < 6);
+                }while(i < 2);
 
                 s.close();
                 // ss.close();
@@ -197,6 +200,8 @@ public class ClientHandler implements Runnable
                 e.printStackTrace(); 
             }
         }
+
+        System.out.println("CLOSED");
 
         try
         {

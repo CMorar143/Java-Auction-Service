@@ -146,7 +146,7 @@ public class Client implements Serializable
 					objectOut.writeFloat(startingBid);
 					objectOut.flush();
 					input.nextLine();
-					
+
 					break;
 				}
 
@@ -165,7 +165,7 @@ public class Client implements Serializable
 				}
 			}
 			System.out.println("\n\n");
-		}while(i < 6);
+		}while(i < 2);
 		s.close();
 	}
 }
