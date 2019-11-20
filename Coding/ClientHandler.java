@@ -50,12 +50,12 @@ public class ClientHandler implements Runnable
         { 
             try 
             {
-                // MyTimerTask task = new MyTimerTask(auction.auctionItem());
+                MyTimerTask task = new MyTimerTask(auction.auctionItem());
                 if (!MyTimerTask.hasStarted)
                 {
-                    checkTimer.schedule(check, 0, 1000);
+                    timer.schedule(task, 6000);
                 }
-                // timer.schedule(task, 6000);
+                // checkTimer.schedule(check, 0, 1000);
                 // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
                 // auction.startTimer();
                 // auction.getTimeRemaining();
