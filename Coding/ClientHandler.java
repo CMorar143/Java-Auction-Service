@@ -191,7 +191,7 @@ public class ClientHandler implements Runnable
                         }
                     }
                     // objectOut.writeObject(auction);
-                }while(i < 2);
+                }while(!exit);
 
                 s.close();
                 // ss.close();

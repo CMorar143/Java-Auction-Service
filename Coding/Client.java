@@ -35,6 +35,7 @@ public class Client implements Serializable
 	{
 		Socket s = new Socket("localhost", 4999);
 		ArrayList<String> menu = null;
+		boolean exit = false;
 
 		Scanner input = new Scanner(System.in);
 		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
@@ -72,7 +73,6 @@ public class Client implements Serializable
 		System.out.println("The item currently on sale is:\n");
 		System.out.println("Item Name: " + item.getItemName());
 		System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
-		System.out.println("print timer here");
 
 		int i = 0;
 
@@ -81,8 +81,18 @@ public class Client implements Serializable
 			// Display item thats on sale
 			System.out.println("\n");
 			displayMenu(menu);
-
-			i = input.nextInt();
+			System.out.println();
+			
+			do
+			{
+				System.out.println("Please choose what you would like to do: ");
+				while (!input.hasNextInt())
+				{
+					System.out.println("Please choose a valid number");
+					input.next();
+				}
+				i = input.nextInt();
+			} while(i <= 0);
 			objectOut.writeInt(i);
 			objectOut.flush();
 			input.nextLine();
@@ -155,6 +165,7 @@ public class Client implements Serializable
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
+					exit = true;
 					break;
 				}
 
@@ -165,7 +176,7 @@ public class Client implements Serializable
 				}
 			}
 			System.out.println("\n\n");
-		}while(i < 2);
+		}while(!exit);
 		s.close();
 	}
 }
