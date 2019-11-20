@@ -8,6 +8,7 @@ public class ClientHandler implements Runnable
     private static Timer checkTimer = new Timer();
 
     private static TimerTask check = new TimerTask() {
+        int num2 = 0;
         public void run()
         {
             // Announce winner of auction and move onto next item
@@ -19,7 +20,8 @@ public class ClientHandler implements Runnable
 
             else
             {
-                System.out.println("working so far");
+                System.out.println("working so far" + String.valueOf(num2));
+                num2++;
             }
         }
     };
@@ -50,12 +52,13 @@ public class ClientHandler implements Runnable
         { 
             try 
             {
-                MyTimerTask task = new MyTimerTask(auction, auction.auctionItem());
+                // MyTimerTask task = new MyTimerTask(auction);
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(task, 6000);
+                    timer.schedule(new MyTimerTask(auction), 60000);
+                    // checkTimer.schedule(check, 0, 1000);
                 }
-                // checkTimer.schedule(check, 0, 1000);
+                
                 // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
                 // auction.startTimer();
                 // auction.getTimeRemaining();
@@ -117,6 +120,11 @@ public class ClientHandler implements Runnable
                                 System.out.println(reply);
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
+                                timer.cancel();
+                                timer = new Timer();
+                                // task = new MyTimerTask(auction);
+                                timer.schedule(new MyTimerTask(auction), 6000);
+                                System.out.println("got here (new timer)");
                                 // auction.stopTimers();
                             }
 
@@ -199,10 +207,10 @@ public class ClientHandler implements Runnable
         private static boolean isFinished = false;
         private static boolean hasStarted = false;
 
-        public MyTimerTask(Auction auction, Item item) 
+        public MyTimerTask(Auction auction) 
         {
             this.auction = auction;
-            this.item = item;
+            item = auction.auctionItem();
         }
 
         @Override
