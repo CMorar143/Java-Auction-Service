@@ -7,15 +7,16 @@ public class ClientHandler implements Runnable
     private static Timer timer = new Timer();
     private static Timer checkTimer = new Timer();
 
-    private static TimerTask check = new TimerTask() {
-        int num2 = 0;
+    static class CheckTime extends TimerTask 
+    {
+        static int num2 = 0;
         public void run()
         {
             // Announce winner of auction and move onto next item
             if (MyTimerTask.isAuctionOver())
             {
                 System.out.println("WORKS");
-                checkTimer.cancel();
+                // checkTimer.cancel();
             }
 
             else
@@ -24,7 +25,7 @@ public class ClientHandler implements Runnable
                 num2++;
             }
         }
-    };
+    }
 
     final ObjectInputStream objectIn; 
     final ObjectOutputStream objectOut; 
@@ -56,7 +57,8 @@ public class ClientHandler implements Runnable
                 if (!MyTimerTask.hasStarted)
                 {
                     timer.schedule(new MyTimerTask(auction), 8000);
-                    // checkTimer.schedule(check, 0, 1000);
+                    checkTimer.scheduleAtFixedRate(new CheckTime(), 0, 1000);
+                    MyTimerTask.hasStarted = true;
                 }
                 
                 // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
@@ -121,9 +123,13 @@ public class ClientHandler implements Runnable
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
                                 timer.cancel();
+                                // checkTimer.cancel();
+                                
                                 timer = new Timer();
-                                // task = new MyTimerTask(auction);
+                                // checkTimer = new Timer();
                                 timer.schedule(new MyTimerTask(auction), 8000);
+                                CheckTime.num2 = 0;
+                                // checkTimer.schedule(new CheckTime(), 0, 1000);
                                 System.out.println("got here (new timer)");
                                 // auction.stopTimers();
                             }
@@ -217,7 +223,7 @@ public class ClientHandler implements Runnable
         @Override
         public void run() 
         {
-            hasStarted = true;
+            // hasStarted = true;
             // Announce winner of auction and move onto next item
             System.out.println("you entered the other timer class");
             auctionNextItem();
