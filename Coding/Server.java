@@ -35,12 +35,13 @@ public class Server /*implements Runnable*/
 	// 		}
 	// 	}
 	// };
-
+	// static final List<ClientHandler> clients = new ArrayList<ClientHandler>();
 	public static void main(String[] args) throws IOException
 	{
 		ServerSocket ss = new ServerSocket(4999);
 		final Auction auction = new Auction();
 		final ArrayList<String> menu = auction.displayMenu();
+		final List<ClientHandler> clients = new ArrayList<ClientHandler>();
 		Socket s = null;
 
 		while(true)
@@ -58,8 +59,23 @@ public class Server /*implements Runnable*/
 			Thread t = new Thread(handler);
 
 			t.start();
-		} 
+			clients.add(handler);
+		}
 	}
+
+	// public void informAll()
+	// {
+	// 	for(ClientHandler client : clients)
+	// 	{
+	// 		try
+	// 		{
+	// 			String r = "Hello";
+	// 			client.objectOut.writeUTF(r);
+	// 		} catch (Exception e) {
+	// 			System.out.println(e);
+	// 		}
+	// 	}
+	// }
 }
 
 

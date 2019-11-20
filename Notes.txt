@@ -43,3 +43,18 @@
 		=> Bid on an item (must be greater than current bid)
 		=> New bid to display on all clients
 		=> Be able to create items for sale
+
+
+
+Functionality
+-> send the current bid to all clients
+-> send winner to all clients
+
+Codeing
+-> Remove unneccessary comments
+-> add neccessary comments
+-> error checking
+->try catch exceptions
+
+Document
+-> write document

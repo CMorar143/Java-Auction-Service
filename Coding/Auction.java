@@ -141,17 +141,24 @@ public class Auction implements Serializable
 	public synchronized void AnnounceWinner()
 	{
 		Item item = auctionItem();
-		if (item.getHighestBidder() != null)
+		if (item != null)
 		{
-			System.out.println("winner declared here " + item.getHighestBidder().getUsername());
+			if (item.getHighestBidder() != null)
+			{
+				System.out.println("winner declared here " + item.getHighestBidder().getUsername());
+			}
+
+			else
+			{
+				System.out.println("No winner\n");
+			}
+			Items.remove(item);
 		}
 
 		else
 		{
-			System.out.println("No winner\n");
+			System.out.println("No more items!");
 		}
-		Items.remove(item);
-		// System.out.println("winner declared here");
 	}
 
 	public synchronized void addItem(String name, float currentBid) 
@@ -162,7 +169,28 @@ public class Auction implements Serializable
 
 	public synchronized Item auctionItem()
 	{
-		return Items.get(0);
+		if (areThereItems())
+		{
+			return Items.get(0);
+		}
+
+		else
+		{
+			return null;
+		}
+	}
+
+	public synchronized boolean areThereItems()
+	{
+		if (Items.size() == 0)
+		{
+			return false;
+		}
+
+		else
+		{
+			return true;
+		}
 	}
 
 	public synchronized void startTimer()

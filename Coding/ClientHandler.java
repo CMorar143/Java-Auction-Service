@@ -94,7 +94,7 @@ public class ClientHandler implements Runnable
                 // MyTimerTask task = new MyTimerTask(auction);
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(new MyTimerTask(auction), 8000, 8000);
+                    timer.schedule(new MyTimerTask(auction), 1000, 1000);
                     checkTimer.scheduleAtFixedRate(new CheckTime(), 0, 1000);
                     MyTimerTask.hasStarted = true;
                 }
@@ -124,14 +124,14 @@ public class ClientHandler implements Runnable
 
                             if(bidPlaced)
                             {
-                                reply = "Congrats you are now the highest bidder!\n";
+                                reply = "Congrats you are now the highest bidder with " + String.valueOf(bid) + "!\n";
                                 System.out.println(reply);
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
                                 timer.cancel();
                                 
                                 timer = new Timer();
-                                timer.schedule(new MyTimerTask(auction), 8000, 8000);
+                                timer.schedule(new MyTimerTask(auction), 1000, 1000);
                                 
                                 CheckTime.num2 = 0;
 
@@ -179,6 +179,7 @@ public class ClientHandler implements Runnable
                             objectOut.flush();
                             this.stop();
                             this.s.close();
+                            auction.removeClient(c);
                             break;
                         }
 
@@ -216,7 +217,7 @@ public class ClientHandler implements Runnable
 
     static class MyTimerTask extends TimerTask  
     {
-        private Item item;
+        // private Item item;
         final Auction auction;
         private static int checker = 0;
         private static boolean isFinished;
@@ -226,7 +227,7 @@ public class ClientHandler implements Runnable
         {
             isFinished = false;
             this.auction = auction;
-            item = auction.auctionItem();
+            // item = auction.auctionItem();
         }
 
         @Override
