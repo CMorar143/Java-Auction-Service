@@ -3,7 +3,27 @@ import java.io.*;
 import java.util.*;
 
 public class ClientHandler implements Runnable 
-{ 
+{
+    private static Timer timer = new Timer();
+    private static Timer checkTimer = new Timer();
+
+    private static TimerTask check = new TimerTask() {
+        public void run()
+        {
+            // Announce winner of auction and move onto next item
+            if (MyTimerTask.isAuctionOver())
+            {
+                System.out.println("WORKS");
+                checkTimer.cancel();
+            }
+
+            else
+            {
+                System.out.println("working so far");
+            }
+        }
+    };
+
     final ObjectInputStream objectIn; 
     final ObjectOutputStream objectOut; 
     final Socket s;
@@ -20,7 +40,7 @@ public class ClientHandler implements Runnable
         this.objectOut = objectOut;
         menu = auction.displayMenu();
         fact = true;
-    } 
+    }
   
     @Override
     public void run()  
@@ -29,9 +49,12 @@ public class ClientHandler implements Runnable
         while (fact)  
         { 
             try 
-            { 
+            {
                 // MyTimerTask task = new MyTimerTask(auction.auctionItem());
-                // checkTimer.schedule(check, 0, 1000);
+                if (!MyTimerTask.hasStarted)
+                {
+                    checkTimer.schedule(check, 0, 1000);
+                }
                 // timer.schedule(task, 6000);
                 // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
                 // auction.startTimer();
@@ -152,45 +175,14 @@ public class ClientHandler implements Runnable
 
                 s.close();
                 // ss.close();
-            
-
-                // static class MyTimerTask extends TimerTask  
-                // {
-                //     private Item item;
-                //     private static boolean isFinished = false;
-
-                //     public MyTimerTask(Item item) 
-                //     {
-                //         this.item = item;
-                //     }
-
-                //     @Override
-                //     public void run() 
-                //     {
-                //         // Announce winner of auction and move onto next item
-                //         System.out.println("you entered the other timer class");
-                //         // returnItem();
-                //         isFinished = true;
-                //     }
-
-                //     public static boolean isAuctionOver() 
-                //     {
-                //         return isFinished;
-                //     }
-
-                //     // public Item returnItem()
-                //     // {
-
-                //     // }
-                // }
             }
             catch (IOException e) { 
                 e.printStackTrace(); 
-            } 
+            }
         }
 
         try
-        { 
+        {
             // closing resources 
             this.objectIn.close(); 
             this.objectOut.close();      
@@ -198,5 +190,37 @@ public class ClientHandler implements Runnable
         catch(IOException e) { 
             e.printStackTrace(); 
         }
+    }
+
+    static class MyTimerTask extends TimerTask  
+    {
+        private Item item;
+        private static boolean isFinished = false;
+        private static boolean hasStarted = false;
+
+        public MyTimerTask(Item item) 
+        {
+            this.item = item;
+        }
+
+        @Override
+        public void run() 
+        {
+            hasStarted = true;
+            // Announce winner of auction and move onto next item
+            System.out.println("you entered the other timer class");
+            // returnItem();
+            isFinished = true;
+        }
+
+        public static boolean isAuctionOver() 
+        {
+            return isFinished;
+        }
+
+        // public Item returnItem()
+        // {
+
+        // }
     }
 }
