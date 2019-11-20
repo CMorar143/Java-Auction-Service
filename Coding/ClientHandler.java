@@ -16,6 +16,7 @@ public class ClientHandler implements Runnable
             if (MyTimerTask.isAuctionOver())
             {
                 System.out.println("WORKS");
+                MyTimerTask.isFinished = false;
                 // checkTimer.cancel();
             }
 
@@ -53,14 +54,6 @@ public class ClientHandler implements Runnable
         { 
             try 
             {
-                // MyTimerTask task = new MyTimerTask(auction);
-                if (!MyTimerTask.hasStarted)
-                {
-                    timer.schedule(new MyTimerTask(auction), 8000);
-                    checkTimer.scheduleAtFixedRate(new CheckTime(), 0, 1000);
-                    MyTimerTask.hasStarted = true;
-                }
-                
                 // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
                 // auction.startTimer();
                 // auction.getTimeRemaining();
@@ -92,6 +85,14 @@ public class ClientHandler implements Runnable
                 objectOut.writeObject(item);
 
                 int i = 0;
+
+                // MyTimerTask task = new MyTimerTask(auction);
+                if (!MyTimerTask.hasStarted)
+                {
+                    timer.schedule(new MyTimerTask(auction), 8000);
+                    checkTimer.scheduleAtFixedRate(new CheckTime(), 0, 1000);
+                    MyTimerTask.hasStarted = true;
+                }
 
                 do
                 {
@@ -128,7 +129,9 @@ public class ClientHandler implements Runnable
                                 timer = new Timer();
                                 // checkTimer = new Timer();
                                 timer.schedule(new MyTimerTask(auction), 8000);
+                                
                                 CheckTime.num2 = 0;
+
                                 // checkTimer.schedule(new CheckTime(), 0, 1000);
                                 System.out.println("got here (new timer)");
                                 // auction.stopTimers();
@@ -211,11 +214,12 @@ public class ClientHandler implements Runnable
         private Item item;
         final Auction auction;
         private static int checker = 0;
-        private static boolean isFinished = false;
+        private static boolean isFinished;
         private static boolean hasStarted = false;
 
         public MyTimerTask(Auction auction) 
         {
+            isFinished = false;
             this.auction = auction;
             item = auction.auctionItem();
         }

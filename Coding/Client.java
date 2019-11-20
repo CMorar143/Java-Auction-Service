@@ -146,7 +146,7 @@ public class Client implements Serializable
 					objectOut.writeFloat(startingBid);
 					objectOut.flush();
 					input.nextLine();
-
+					
 					break;
 				}
 
