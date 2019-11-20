@@ -141,8 +141,11 @@ public class Auction implements Serializable
 	public synchronized void AnnounceWinner()
 	{
 		Item item = auctionItem();
-		System.out.println("winner declared here" + item.getHighestBidder().getUsername());
-		// Items.remove(item);
+		if (item.getHighestBidder() != null)
+		{
+			System.out.println("winner declared here" + item.getHighestBidder().getUsername());
+		}
+		Items.remove(item);
 		// System.out.println("winner declared here");
 	}
 
