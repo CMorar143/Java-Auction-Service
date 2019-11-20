@@ -26,6 +26,7 @@ public class Server /*implements Runnable*/
 			if (MyTimerTask.isAuctionOver())
 			{
 				System.out.println("WORKS");
+				checkTimer.cancel();
 			}
 
 			else
@@ -34,12 +35,6 @@ public class Server /*implements Runnable*/
 			}
 		}
 	};
-
-	public static void AnnounceWinner(Item sold)
-	{
-		// Item item = auction.auctionItem();
-		// System.out.println("winner declared here" + item.getHighestBidder().getUsername());
-	}
 
 	public static void main(String[] args) throws IOException
 	{
@@ -253,7 +248,7 @@ public class Server /*implements Runnable*/
 
 
 // Make another timer
-// every 2 seconds this new timer will check if the other main one is running
+// every 2 seconds this new timer will check if the other main one is finished
 // if it is
 	// display winner
 // else
