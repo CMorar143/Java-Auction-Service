@@ -39,8 +39,8 @@ public class Server /*implements Runnable*/
 	public static void main(String[] args) throws IOException
 	{
 		ServerSocket ss = new ServerSocket(4999);
-		Auction auction = new Auction();
-		ArrayList<String> menu = auction.displayMenu();
+		final Auction auction = new Auction();
+		final ArrayList<String> menu = auction.displayMenu();
 		Socket s = null;
 
 		while(true)
@@ -53,7 +53,7 @@ public class Server /*implements Runnable*/
 			ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
-			ClientHandler handler = new ClientHandler(s, objectIn, objectOut);
+			ClientHandler handler = new ClientHandler(s, auction, objectIn, objectOut);
 
 			Thread t = new Thread(handler);
 
@@ -69,17 +69,18 @@ class ClientHandler implements Runnable
     final ObjectInputStream objectIn; 
     final ObjectOutputStream objectOut; 
     final Socket s;
-    Auction auction = new Auction();
+    final Auction auction;
     boolean fact;
-    final ArrayList<String> menu = auction.displayMenu();
+    final ArrayList<String> menu;
 
     // Constructor 
-    public ClientHandler(Socket s, ObjectInputStream objectIn, ObjectOutputStream objectOut)  
+    public ClientHandler(Socket s, Auction auction, ObjectInputStream objectIn, ObjectOutputStream objectOut)  
     {
         this.s = s;
-        // this.auction = auction;
+        this.auction = auction;
         this.objectIn = objectIn;
         this.objectOut = objectOut;
+        menu = auction.displayMenu();
         fact = true;
     } 
   

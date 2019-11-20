@@ -65,12 +65,12 @@ public class Auction implements Serializable
 	}
 
 	// This should be in the server class
-	public ArrayList<String> displayMenu()
+	public synchronized ArrayList<String> displayMenu()
 	{
 		return menu;
 	}
 
-	public boolean addClient(Client c)
+	public synchronized boolean addClient(Client c)
 	{
 		// First we ensure the client doesn't already exist in the list
 		int check = 0;
@@ -98,14 +98,14 @@ public class Auction implements Serializable
 		// Add client username and password to file (?)
 	}
 
-	public void removeClient(Client c)
+	public synchronized void removeClient(Client c)
 	{
 		Clients.remove(c);
 
 		// Remove client username and password from file (?)
 	}
 
-	public boolean placeBid(float bid, Client c)
+	public synchronized boolean placeBid(float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
 		float currentBid = Items.get(0).getCurrentBid();
@@ -125,7 +125,7 @@ public class Auction implements Serializable
 		}
 	}
 
-	public void listAuctionItems()
+	public synchronized void listAuctionItems()
 	{
 		if (Items != null)
 		{
@@ -138,35 +138,35 @@ public class Auction implements Serializable
 		}
 	}
 
-	public void AnnounceWinner()
+	public synchronized void AnnounceWinner()
 	{
 		Item item = auctionItem();
 		System.out.println("winner declared here" + item.getHighestBidder().getUsername());
 	}
 
-	public void addItem(String name, float currentBid) 
+	public synchronized void addItem(String name, float currentBid) 
 	{
 		Item newItem = new Item(name, currentBid);
 		Items.add(newItem);
 	}
 
-	public Item auctionItem()
+	public synchronized Item auctionItem()
 	{
 		return Items.get(0);
 	}
 
-	public void startTimer()
+	public synchronized void startTimer()
 	{
 		// timer.scheduleAtFixedRate(task, 0, 6000);
 		// timer.schedule(task, 6000);
 	}
 
-	public void getTimeRemaining()
+	public synchronized void getTimeRemaining()
 	{
 		timeLeft.schedule(getTime, 0, 1000);
 	}
 
-	public void stopTimers()
+	public synchronized void stopTimers()
 	{
 		timer.cancel();
 		timeLeft.cancel();
