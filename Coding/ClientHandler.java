@@ -244,6 +244,7 @@ public class ClientHandler implements Runnable
         public void auctionNextItem()
         {
             auction.AnnounceWinner();
+            CheckTime.num2 = 0;
         }
     }
 }
