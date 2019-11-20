@@ -142,6 +142,8 @@ public class Auction implements Serializable
 	{
 		Item item = auctionItem();
 		System.out.println("winner declared here" + item.getHighestBidder().getUsername());
+		// Items.remove(item);
+		// System.out.println("winner declared here");
 	}
 
 	public synchronized void addItem(String name, float currentBid) 

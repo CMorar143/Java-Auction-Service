@@ -41,7 +41,7 @@ public class ClientHandler implements Runnable
         menu = auction.displayMenu();
         fact = true;
     }
-  
+
     @Override
     public void run()  
     { 
@@ -50,7 +50,7 @@ public class ClientHandler implements Runnable
         { 
             try 
             {
-                MyTimerTask task = new MyTimerTask(auction.auctionItem());
+                MyTimerTask task = new MyTimerTask(auction, auction.auctionItem());
                 if (!MyTimerTask.hasStarted)
                 {
                     timer.schedule(task, 6000);
@@ -99,7 +99,7 @@ public class ClientHandler implements Runnable
                             // Check timer
                             objectOut.flush();
                             objectOut.reset();
-                            // Send item infor thats on sale
+                            // Send item info thats on sale
                             item = auction.auctionItem();
                             objectOut.writeObject(item);
                             reply = "What would you like to bid? (Must be greater than the current bid)\n";
@@ -195,11 +195,13 @@ public class ClientHandler implements Runnable
     static class MyTimerTask extends TimerTask  
     {
         private Item item;
+        final Auction auction;
         private static boolean isFinished = false;
         private static boolean hasStarted = false;
 
-        public MyTimerTask(Item item) 
+        public MyTimerTask(Auction auction, Item item) 
         {
+            this.auction = auction;
             this.item = item;
         }
 
@@ -209,7 +211,8 @@ public class ClientHandler implements Runnable
             hasStarted = true;
             // Announce winner of auction and move onto next item
             System.out.println("you entered the other timer class");
-            // returnItem();
+            auctionNextItem();
+            System.out.println("passed auction next()");
             isFinished = true;
         }
 
@@ -218,9 +221,9 @@ public class ClientHandler implements Runnable
             return isFinished;
         }
 
-        // public Item returnItem()
-        // {
-
-        // }
+        public void auctionNextItem()
+        {
+            auction.AnnounceWinner();
+        }
     }
 }
