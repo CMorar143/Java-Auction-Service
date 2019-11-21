@@ -103,9 +103,9 @@ public class Auction implements Serializable
 
 	public synchronized void AnnounceWinner()
 	{
-		Item item = auctionItem();
-		if (item != null)
+		if(areThereItems())
 		{
+			Item item = auctionItem();
 			if (item.getHighestBidder() != null)
 			{
 				System.out.println("The " + item.getItemName() + " has been sold for " + item.getCurrentBid() + " euro!");
@@ -116,13 +116,8 @@ public class Auction implements Serializable
 			{
 				System.out.println("Item has been scrapped as nobody bid on it");
 			}
-			
-			Items.remove(item);
-		}
 
-		else
-		{
-			System.out.println("No more items!");
+			Items.remove(item);
 		}
 	}
 

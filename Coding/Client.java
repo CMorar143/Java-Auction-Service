@@ -74,10 +74,10 @@ public class Client implements Serializable
 			
 			do
 			{
-				System.out.println("Please choose what you would like to do: ");
+				System.out.print("Please choose what you would like to do: ");
 				while (!input.hasNextInt())
 				{
-					System.out.println("Please choose a valid number");
+					System.out.print("Please choose a valid number");
 					input.next();
 				}
 				i = input.nextInt();
@@ -119,15 +119,13 @@ public class Client implements Serializable
 				// Add new item for auction
 				case 2:
 				{
-					reply = objectIn.readUTF();
-					System.out.println(reply);
 					String itemName = null;
 					float startingBid = 0;
 
-					System.out.println("What would you like to auction: ");
+					System.out.print("What would you like to auction off: ");
 					itemName = input.nextLine();
 
-					System.out.println("What is the starting bid: ");
+					System.out.print("What is the starting bid: ");
 					startingBid = input.nextFloat();
 
 					objectOut.writeUTF(itemName);

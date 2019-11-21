@@ -10,6 +10,7 @@ public class ClientHandler implements Runnable
     static class CheckTime extends TimerTask 
     {
         static int timeRemaining = 10;
+        static boolean isChecking = true;
 
         public void run()
         {
@@ -86,9 +87,10 @@ public class ClientHandler implements Runnable
 
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(new MyTimerTask(auction), 10000, 10000);
+                    timer.schedule(new MyTimerTask(auction), 4000, 4000);
                     checkTimer.schedule(new CheckTime(), 0, 1000);
                     MyTimerTask.hasStarted = true;
+                    CheckTime.timeRemaining = 10;
                 }
 
                 do
@@ -105,7 +107,7 @@ public class ClientHandler implements Runnable
                             // Send item info thats on sale
                             item = auction.auctionItem();
                             objectOut.writeObject(item);
-                            reply = "What would you like to bid? (Must be greater than the current bid)\n";
+                            reply = "What would you like to bid? (Must be greater than the current bid)";
                             objectOut.writeUTF(reply);
                             objectOut.flush();
 
@@ -121,7 +123,7 @@ public class ClientHandler implements Runnable
                                 timer.cancel();
                                 
                                 timer = new Timer();
-                                timer.schedule(new MyTimerTask(auction), 10000, 10000);
+                                timer.schedule(new MyTimerTask(auction), 4000, 4000);
                                 
                                 CheckTime.timeRemaining = 10;
 
@@ -139,13 +141,18 @@ public class ClientHandler implements Runnable
 
                         case 2:
                         {
-                            reply = "You want to create a new auction\n";
-                            objectOut.writeUTF(reply);
-                            objectOut.flush();
-
                             String itemName = objectIn.readUTF();
                             float startingBid = objectIn.readFloat();
                             auction.addItem(itemName, startingBid);
+
+                            if (!CheckTime.isChecking)
+                            {
+                                checkTimer = new Timer();
+                                timer = new Timer();
+                                checkTimer.schedule(new CheckTime(), 0, 1000);
+                                timer.schedule(new MyTimerTask(auction), 10000, 10000);
+                                CheckTime.isChecking = true;
+                            }
 
                             auction.listAuctionItems();
                             break;
@@ -164,7 +171,7 @@ public class ClientHandler implements Runnable
 
                         default:
                         {
-                            reply = "You entered invalid input\n";
+                            reply = "You entered invalid input";
                             System.out.println(reply);
                             objectOut.writeUTF(reply);
                             objectOut.flush();
@@ -207,8 +214,19 @@ public class ClientHandler implements Runnable
         @Override
         public void run() 
         {
-            auctionNextItem();
-            isFinished = true;
+            if (auction.areThereItems())
+            {
+                auctionNextItem();
+                isFinished = true;
+            }
+
+            else
+            {
+                System.out.println("No more items!");
+                checkTimer.cancel();
+                timer.cancel();
+                CheckTime.isChecking = false;
+            }
         }
 
         public static boolean isAuctionOver() 
