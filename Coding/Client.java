@@ -31,6 +31,7 @@ public class Client implements Serializable
 		Socket s = new Socket("localhost", 4999);
 		ArrayList<String> menu = null;
 		boolean exit = false;
+		boolean allowedToLogin = false;
 
 		Scanner input = new Scanner(System.in);
 		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
@@ -41,10 +42,20 @@ public class Client implements Serializable
 		System.out.println(reply);
 
 		String username;
-		System.out.println("Username: ");
-		username = input.nextLine();
-		objectOut.writeUTF(username);
-		objectOut.flush();
+		
+		while(!allowedToLogin)
+		{
+			System.out.print("Please enter a unique username: ");
+			username = input.nextLine();
+			objectOut.writeUTF(username);
+			objectOut.flush();
+			allowedToLogin = objectIn.readBoolean();
+
+			if (!allowedToLogin)
+			{
+				System.out.println(username + " is already taken!");
+			}
+		}
 
 		try {
 			menu = (ArrayList<String>) objectIn.readObject();
@@ -99,20 +110,28 @@ public class Client implements Serializable
 						System.out.println(e);
 					}
 
-					System.out.println("\nThe item currently on sale is:");
-					System.out.println("Item Name: " + item.getItemName());
-					System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
+					if (item != null)
+					{
+						System.out.println("\nThe item currently on sale is:");
+						System.out.println("Item Name: " + item.getItemName());
+						System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
 
-					reply = objectIn.readUTF();
-					System.out.println(reply);
+						reply = objectIn.readUTF();
+						System.out.println(reply);
 
-					float bid = input.nextFloat();
-					objectOut.writeFloat(bid);
-					objectOut.flush();
-					input.nextLine();
+						float bid = input.nextFloat();
+						objectOut.writeFloat(bid);
+						objectOut.flush();
+						input.nextLine();
 
-					reply = objectIn.readUTF();
-					System.out.println(reply);
+						reply = objectIn.readUTF();
+						System.out.println(reply);
+					}
+
+					else
+					{
+						System.out.println("No item to bid on!");
+					}
 					break;
 				}
 

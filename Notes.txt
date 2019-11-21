@@ -55,7 +55,7 @@ Functionality
 
 
 
-Codeing
+Coding
 -> Remove unneccessary comments
 -> add neccessary comments
 -> error checking

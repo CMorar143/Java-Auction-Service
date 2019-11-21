@@ -64,20 +64,28 @@ public class ClientHandler implements Runnable
                 objectOut.flush();
 
                 String username;
-                username = objectIn.readUTF();
-
-                Client c = new Client(username);
-                boolean clientAdded = auction.addClient(c);
-                if(clientAdded)
+                Client c;
+                while(true)
                 {
-                    System.out.println("client added to auction");
-                }
+                    username = objectIn.readUTF();
 
-                else
-                {
-                    System.out.println("User already exists");
-                }
+                    c = new Client(username);
+                    boolean clientAdded = auction.addClient(c);
+                    if(clientAdded)
+                    {
+                        System.out.println("client added to auction");
+                        objectOut.writeBoolean(true);
+                        objectOut.flush();
+                        break;
+                    }
 
+                    else
+                    {
+                        System.out.println("User already exists");
+                        objectOut.writeBoolean(false);
+                        objectOut.flush();
+                    }
+                }
                 objectOut.writeObject(menu);
 
                 Item item = auction.auctionItem();
@@ -93,7 +101,7 @@ public class ClientHandler implements Runnable
                     CheckTime.timeRemaining = 10;
                 }
 
-                do
+                while(!exit)
                 {
                     i = objectIn.readInt();
 
@@ -107,34 +115,38 @@ public class ClientHandler implements Runnable
                             // Send item info thats on sale
                             item = auction.auctionItem();
                             objectOut.writeObject(item);
-                            reply = "What would you like to bid? (Must be greater than the current bid)";
-                            objectOut.writeUTF(reply);
-                            objectOut.flush();
-
-                            float bid = objectIn.readFloat();
-
-                            boolean bidPlaced = auction.placeBid(bid, c);
-
-                            if(bidPlaced)
+                            
+                            if(item != null)
                             {
-                                reply = "\nCongrats you are now the highest bidder with " + String.valueOf(bid) + "!";
+                                reply = "What would you like to bid? (Must be greater than the current bid)";
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
-                                timer.cancel();
-                                
-                                timer = new Timer();
-                                timer.schedule(new MyTimerTask(auction), 4000, 4000);
-                                
-                                CheckTime.timeRemaining = 10;
 
-                                System.out.println("\nNew bid was placed. Resetting timer...");
-                            }
+                                float bid = objectIn.readFloat();
 
-                            else
-                            {
-                                reply = "That didn't work!";
-                                objectOut.writeUTF(reply);
-                                objectOut.flush();
+                                boolean bidPlaced = auction.placeBid(bid, c);
+
+                                if(bidPlaced)
+                                {
+                                    reply = "\nCongrats you are now the highest bidder with " + String.valueOf(bid) + "!";
+                                    objectOut.writeUTF(reply);
+                                    objectOut.flush();
+                                    timer.cancel();
+                                    
+                                    timer = new Timer();
+                                    timer.schedule(new MyTimerTask(auction), 4000, 4000);
+                                    
+                                    CheckTime.timeRemaining = 10;
+
+                                    System.out.println("\nNew bid was placed. Resetting timer...");
+                                }
+
+                                else
+                                {
+                                    reply = "That didn't work!";
+                                    objectOut.writeUTF(reply);
+                                    objectOut.flush();
+                                }
                             }
                             break;
                         }
@@ -177,7 +189,7 @@ public class ClientHandler implements Runnable
                             objectOut.flush();
                         }
                     }
-                } while(!exit);
+                }
 
                 s.close();
             }
