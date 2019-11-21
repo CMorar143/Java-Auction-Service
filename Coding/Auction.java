@@ -14,7 +14,8 @@ public class Auction implements Serializable
 		menu.add("Please choose what you would like to do");
 		menu.add("1. Bid On The Item");
 		menu.add("2. Create A New Auction");
-		menu.add("3. Leave Auction");
+		menu.add("3. List Auction Items");
+		menu.add("4. Leave Auction");
 
 		// Create 5 default auction items
 		Item item1 = new Item("Antique Chair", 45);

@@ -47,6 +47,7 @@ public class Client implements Serializable
 		boolean allowedToLogin = false;
 		String reply = null;
 		Item item = null;
+		Auction auction = null;
 		int menuNum = 0;
 		String username;
 
@@ -190,8 +191,27 @@ public class Client implements Serializable
 					break;
 				}
 
-				// Leave auction
+				// Display the list of auction items
 				case 3:
+				{
+					auction = null;
+
+					try {
+						auction = (Auction) objectIn.readObject();
+					} catch(Exception e) {
+						System.out.println(e);
+					}
+
+					if (auction != null)
+					{
+						auction.listAuctionItems();
+					}
+
+					break;
+				}
+
+				// Leave auction
+				case 4:
 				{
 					// Gracefully terminate the application
 					reply = objectIn.readUTF();
@@ -200,7 +220,7 @@ public class Client implements Serializable
 					break;
 				}
 
-				// This ensures the client enters a value between 1-3 inclusive
+				// This ensures the client enters a value between 1-4 inclusive
 				default:
 				{
 					reply = objectIn.readUTF();

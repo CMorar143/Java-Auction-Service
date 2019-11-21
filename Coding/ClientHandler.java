@@ -179,8 +179,18 @@ public class ClientHandler implements Runnable
                             break;
                         }
 
-                        // If the client chooses to terminate
+                        // Display the list of auction items
                         case 3:
+                        {
+                            objectOut.flush();
+                            objectOut.reset();
+
+                            objectOut.writeObject(auction);
+                            break;
+                        }
+
+                        // If the client chooses to terminate
+                        case 4:
                         {
                             reply = "Thanks for taking part!\nGoodbye!";
                             objectOut.writeUTF(reply);
@@ -191,10 +201,10 @@ public class ClientHandler implements Runnable
                             break;
                         }
 
-                        // Ensures the input is between 1-3 inclusive
+                        // Ensures the input is between 1-4 inclusive
                         default:
                         {
-                            reply = "Value must be between 1-3";
+                            reply = "Value must be between 1-4";
                             System.out.println(reply);
                             objectOut.writeUTF(reply);
                             objectOut.flush();
