@@ -5,6 +5,7 @@ import java.util.*;
 public class Client implements Serializable
 {
 	private String username;
+	private static final int PORT = 1235;
 
 	// Constructor
 	public Client(String username)
@@ -41,7 +42,7 @@ public class Client implements Serializable
 
 	public static void main(String[] args) throws IOException
 	{
-		Socket s = new Socket("localhost", 4999);
+		Socket s = new Socket(args[0], PORT);
 		ArrayList<String> menu = null;
 		boolean exit = false;
 		boolean allowedToLogin = false;
@@ -50,11 +51,20 @@ public class Client implements Serializable
 		Auction auction = null;
 		int menuNum = 0;
 		String username;
+		ObjectOutputStream objectOut = null;
+		ObjectInputStream objectIn = null;
+		float bid = 0;
 
 		// For sending and receiving data from the server
 		Scanner input = new Scanner(System.in);
-		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
-		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
+
+		try
+		{
+			objectOut = new ObjectOutputStream(s.getOutputStream());
+			objectIn = new ObjectInputStream(s.getInputStream());
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 
 		// "Enter your username"
 		reply = objectIn.readUTF();
@@ -76,7 +86,6 @@ public class Client implements Serializable
 		}
 
 		// Read in the main menu
-
 		menu = getMenu(objectIn);
 
 		// Read in the item thats currently on auction
@@ -150,7 +159,16 @@ public class Client implements Serializable
 						System.out.println(reply);
 
 						// Send bid amount to the server
-						float bid = input.nextFloat();
+						do
+						{
+							while (!input.hasNextFloat())
+							{
+								System.out.print("Please choose a valid number: ");
+								input.next();
+							}
+							bid = input.nextFloat();
+						} while(bid <= 0);
+
 						objectOut.writeFloat(bid);
 						objectOut.flush();
 						input.nextLine();
@@ -179,7 +197,15 @@ public class Client implements Serializable
 					itemName = input.nextLine();
 
 					System.out.print("What is the starting bid: ");
-					startingBid = input.nextFloat();
+					do
+					{
+						while (!input.hasNextFloat())
+						{
+							System.out.print("Please choose a valid number: ");
+							input.next();
+						}
+						startingBid = input.nextFloat();
+					} while(startingBid <= 0);
 
 					// Send these to the server
 					// The server creates the item and adds it to the auction

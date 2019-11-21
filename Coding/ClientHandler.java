@@ -86,7 +86,7 @@ public class ClientHandler implements Runnable
                 // This ensures that there is only everone instance of the timers scheduled
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(new MyTimerTask(auction), 4000, 4000);
+                    timer.schedule(new MyTimerTask(auction), 10000, 10000);
                     checkTimer.schedule(new CheckTime(), 0, 1000);
                     MyTimerTask.hasStarted = true;
                     CheckTime.timeRemaining = 10;
@@ -132,10 +132,10 @@ public class ClientHandler implements Runnable
                                     // Reset the auction timers after any client successfully makes a new bid
                                     timer.cancel();
                                     timer = new Timer();
-                                    timer.schedule(new MyTimerTask(auction), 4000, 4000);
+                                    timer.schedule(new MyTimerTask(auction), 10000, 10000);
                                     CheckTime.timeRemaining = 10;
 
-                                    System.out.println("\nNew bid was placed. Resetting timer...");
+                                    System.out.println("\nNew bid was placed. Resetting timer...");                        
                                 }
 
                                 // The bid was unsuccessful
@@ -166,7 +166,7 @@ public class ClientHandler implements Runnable
                             {
                                 checkTimer = new Timer();
                                 timer = new Timer();
-                                timer.schedule(new MyTimerTask(auction), 4000, 4000);
+                                timer.schedule(new MyTimerTask(auction), 10000, 10000);
                                 checkTimer.schedule(new CheckTime(), 10, 1000);
                                 CheckTime.isChecking = true;
                             }
@@ -293,7 +293,7 @@ public class ClientHandler implements Runnable
         public void auctionNextItem()
         {
             CheckTime.timeRemaining = 10;
-            auction.AnnounceWinner();
+            auction.announceWinner();
         }
     }
 }

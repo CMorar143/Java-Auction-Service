@@ -4,13 +4,28 @@ import java.util.*;
 
 public class Server
 {
+	private static final int PORT = 1235;
+	private static ServerSocket ss;
+
 	public static void main(String[] args) throws IOException
 	{
-		ServerSocket ss = new ServerSocket(4999);
+		try
+		{
+			ss = new ServerSocket(1235);
+		}
+		catch (IOException ioEx)
+		{
+			System.out.println("\nUnable to set up port!");
+			System.exit(1);
+		}
 		final Auction auction = new Auction();
 		final ArrayList<String> menu = auction.displayMenu();
 		Socket s = null;
 
+		// Loop forever
+		// Accept client requests and create a client handler thread
+		// for each one. This allows the server to handle mutliple
+		// clients in concurrency
 		while(true)
 		{
 			s = ss.accept();
@@ -29,21 +44,3 @@ public class Server
 		}
 	}
 }
-
-
-
-
-// Create the same timer on the server side
-// When the timer elapses invoke a method
-// The method call a method on the client side (passing the item reference)
-// print the highest bidder and bid on the client side
-// remove that item from the auction
-// restart timers with the new auction
-
-
-// Make another timer
-// every 2 seconds this new timer will check if the other main one is finished
-// if it is
-	// display winner
-// else
-	// dont do anything

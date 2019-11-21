@@ -110,7 +110,7 @@ public class Auction implements Serializable
 
 	// Announces the winner
 	// Removes the current item so that the next one is now on auction
-	public synchronized void AnnounceWinner()
+	public synchronized void announceWinner()
 	{
 		if(areThereItems())
 		{
