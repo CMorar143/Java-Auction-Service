@@ -8,6 +8,7 @@ public class Auction implements Serializable
 	private ArrayList<Client> Clients = new ArrayList<Client>();
 	private ArrayList<String> menu = new ArrayList<String>();
 
+	// Constructor
 	public Auction()
 	{
 		menu.add("Please choose what you would like to do");
@@ -32,17 +33,28 @@ public class Auction implements Serializable
 		Items.add(item5);
 	}
 
-	// This should be in the server class
+	// Return the menu for the server to send to the client
 	public synchronized ArrayList<String> displayMenu()
 	{
 		return menu;
 	}
 
+	// Add the client to the list of clients
 	public synchronized void addClient(Client c)
 	{
 		Clients.add(c);
 	}
 
+	// Remove the client to the list of clients
+	// This will allow others to use that username if the original client has left
+	public synchronized void removeClient(Client c)
+	{
+		Clients.remove(c);
+	}
+
+	// This used to enforce a unqiue name policy within the system
+	// It loops through, checking if the username already exists and returns 
+	// a boolean to tell the server whether or not it does already exist
 	public boolean doesClientExist(String name)
 	{
 		boolean clientExists = false;
@@ -60,11 +72,9 @@ public class Auction implements Serializable
 		return clientExists;
 	}
 
-	public synchronized void removeClient(Client c)
-	{
-		Clients.remove(c);
-	}
-
+	// Checks wwhether or not the new bid is higher than the original
+	// and returns a boolean to inform the server whether the action was successful
+	// Note: Items.get(0) will always be the one currently on auction
 	public synchronized boolean placeBid(float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
@@ -83,6 +93,7 @@ public class Auction implements Serializable
 		}
 	}
 
+	// Used to validate whether the client successfully added a new item
 	public synchronized void listAuctionItems()
 	{
 		if (Items != null)
@@ -96,6 +107,8 @@ public class Auction implements Serializable
 		}
 	}
 
+	// Announces the winner
+	// Removes the current item so that the next one is now on auction
 	public synchronized void AnnounceWinner()
 	{
 		if(areThereItems())
@@ -116,12 +129,14 @@ public class Auction implements Serializable
 		}
 	}
 
+	// Used by the server to add the new item provided by the client
 	public synchronized void addItem(String name, float currentBid) 
 	{
 		Item newItem = new Item(name, currentBid);
 		Items.add(newItem);
 	}
 
+	// This returns the  item that is currently up for auction
 	public synchronized Item auctionItem()
 	{
 		if (areThereItems())
@@ -135,6 +150,8 @@ public class Auction implements Serializable
 		}
 	}
 
+	// Checksto see if the list is empty
+	// i.e. if all the items have already been auctioned off
 	public synchronized boolean areThereItems()
 	{
 		if (Items.size() == 0)
