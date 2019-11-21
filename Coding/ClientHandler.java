@@ -149,8 +149,8 @@ public class ClientHandler implements Runnable
                             {
                                 checkTimer = new Timer();
                                 timer = new Timer();
-                                checkTimer.schedule(new CheckTime(), 0, 1000);
-                                timer.schedule(new MyTimerTask(auction), 10000, 10000);
+                                timer.schedule(new MyTimerTask(auction), 4000, 4000);
+                                checkTimer.schedule(new CheckTime(), 10, 1000);
                                 CheckTime.isChecking = true;
                             }
 
@@ -185,8 +185,6 @@ public class ClientHandler implements Runnable
                 e.printStackTrace(); 
             }
         }
-
-        System.out.println("CLOSED");
 
         try
         {
