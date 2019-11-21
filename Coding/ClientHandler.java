@@ -4,9 +4,11 @@ import java.util.*;
 
 public class ClientHandler implements Runnable 
 {
+    // Timer tasks
     private static Timer timer = new Timer();
     private static Timer checkTimer = new Timer();
 
+    // Used as a countdown to the end of the auction
     static class CheckTime extends TimerTask 
     {
         static int timeRemaining = 10;
@@ -69,10 +71,10 @@ public class ClientHandler implements Runnable
                 {
                     username = objectIn.readUTF();
 
-                    c = new Client(username);
-                    boolean clientAdded = auction.addClient(c);
-                    if(clientAdded)
+                    if(!auction.doesClientExist(username))
                     {
+                        c = new Client(username);
+                        auction.addClient(c);
                         System.out.println("client added to auction");
                         objectOut.writeBoolean(true);
                         objectOut.flush();
@@ -86,6 +88,7 @@ public class ClientHandler implements Runnable
                         objectOut.flush();
                     }
                 }
+                
                 objectOut.writeObject(menu);
 
                 Item item = auction.auctionItem();
@@ -143,7 +146,7 @@ public class ClientHandler implements Runnable
 
                                 else
                                 {
-                                    reply = "That didn't work!";
+                                    reply = "Your bid was too low!";
                                     objectOut.writeUTF(reply);
                                     objectOut.flush();
                                 }

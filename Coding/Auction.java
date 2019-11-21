@@ -38,31 +38,26 @@ public class Auction implements Serializable
 		return menu;
 	}
 
-	public synchronized boolean addClient(Client c)
+	public synchronized void addClient(Client c)
 	{
-		// First we ensure the client doesn't already exist in the list
-		int check = 0;
+		Clients.add(c);
+	}
+
+	public boolean doesClientExist(String name)
+	{
+		boolean clientExists = false;
 		for (int i = 0; i < Clients.size(); i++)
 		{
 			String user = Clients.get(i).getUsername();
 
 			// If the client is already in the list
-			if (user.equals(c.getUsername()) == true)
+			if (user.equals(name) == true)
 			{
-				check = 1;
+				clientExists = true;
 			}
 		}
 
-		if (check == 0)
-		{
-			Clients.add(c);
-			return true;
-		}
-
-		else
-		{
-			return false;
-		}
+		return clientExists;
 	}
 
 	public synchronized void removeClient(Client c)

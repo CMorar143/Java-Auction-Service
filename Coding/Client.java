@@ -5,16 +5,8 @@ import java.util.*;
 public class Client implements Serializable
 {
 	private String username;
-	public static boolean newBid = false;
 
-	public static void displayMenu(ArrayList<String> menu)
-	{
-		for (int i = 0; i < menu.size(); i++)
-		{
-			System.out.println(menu.get(i));
-		}
-	}
-
+	// Constructor
 	public Client(String username)
 	{
 		this.username = username;
@@ -25,24 +17,49 @@ public class Client implements Serializable
 		return this.username;
 	}
 
+	public static void displayMenu(ArrayList<String> menu)
+	{
+		for (int i = 0; i < menu.size(); i++)
+		{
+			System.out.println(menu.get(i));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static ArrayList<String> getMenu(ObjectInputStream objectIn)
+	{
+		ArrayList<String> menu = null;
+
+		try {
+			menu = (ArrayList<String>) objectIn.readObject();
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		return menu;
+	}
+
 	public static void main(String[] args) throws IOException
 	{
-
 		Socket s = new Socket("localhost", 4999);
 		ArrayList<String> menu = null;
 		boolean exit = false;
 		boolean allowedToLogin = false;
+		String reply = null;
+		Item item = null;
+		int menuNum = 0;
+		String username;
 
+		// For sending and receiving data from the server
 		Scanner input = new Scanner(System.in);
 		ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
 		ObjectInputStream objectIn = new ObjectInputStream(s.getInputStream());
 
-		String reply = null;
+		// "Enter your username"
 		reply = objectIn.readUTF();
 		System.out.println(reply);
-
-		String username;
 		
+		// Keep looping through until the client enters a unique username
 		while(!allowedToLogin)
 		{
 			System.out.print("Please enter a unique username: ");
@@ -57,32 +74,38 @@ public class Client implements Serializable
 			}
 		}
 
-		try {
-			menu = (ArrayList<String>) objectIn.readObject();
-		} catch(Exception e) {
-			System.out.println(e);
-		}
+		// Read in the main menu
 
-		Item item = null;
+		menu = getMenu(objectIn);
 
+		// Read in the item thats currently on auction
 		try {
 			item = (Item) objectIn.readObject();
 		} catch(Exception e) {
 			System.out.println(e);
 		}
 
-		System.out.println("\nThe item currently on sale is:");
-		System.out.println("Item Name: " + item.getItemName());
-		System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
+		if (item != null)
+		{
+			System.out.println("\nThe item currently on sale is:");
+			System.out.println("Item Name: " + item.getItemName());
+			System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
+		}
 
-		int i = 0;
+		else
+		{
+			System.out.println("No item to bid on!\nYou will need to add one...");
+		}
 
+		// Loop until the client chooses to exit
 		do
 		{
-			// Display item thats on sale
+			// Display the main menu until the client chooses to exit
 			displayMenu(menu);
 			System.out.println();
 			
+			// Error checking against invalid menu choices
+			// Loops until the client enters a positive integer
 			do
 			{
 				System.out.print("Please choose what you would like to do: ");
@@ -91,17 +114,21 @@ public class Client implements Serializable
 					System.out.print("Please choose a valid number");
 					input.next();
 				}
-				i = input.nextInt();
-			} while(i <= 0);
-			objectOut.writeInt(i);
+				menuNum = input.nextInt();
+			} while(menuNum <= 0);
+
+			// Send client's choice to server
+			objectOut.writeInt(menuNum);
 			objectOut.flush();
 			input.nextLine();
+
 			// Get input back
-			switch (i)
+			switch (menuNum)
 			{
 				// Make a bid
 				case 1:
 				{
+					// Reassign item object to the one thats currently on auction
 					item = null;
 
 					try {
@@ -110,6 +137,8 @@ public class Client implements Serializable
 						System.out.println(e);
 					}
 
+					// Error checking to ensure there is at least one item
+					// that's still on auction i.e =. that the auction isn't over
 					if (item != null)
 					{
 						System.out.println("\nThe item currently on sale is:");
@@ -119,18 +148,21 @@ public class Client implements Serializable
 						reply = objectIn.readUTF();
 						System.out.println(reply);
 
+						// Send bid amount to the server
 						float bid = input.nextFloat();
 						objectOut.writeFloat(bid);
 						objectOut.flush();
 						input.nextLine();
 
+						// Feedback regarding whether or not the bid was successful
 						reply = objectIn.readUTF();
 						System.out.println(reply);
 					}
 
+					// There are no items
 					else
 					{
-						System.out.println("No item to bid on!");
+						System.out.println("No item to bid on!\nYou will need to add one...");
 					}
 					break;
 				}
@@ -138,6 +170,7 @@ public class Client implements Serializable
 				// Add new item for auction
 				case 2:
 				{
+					// Client specifies the new items name and starting bid
 					String itemName = null;
 					float startingBid = 0;
 
@@ -147,6 +180,8 @@ public class Client implements Serializable
 					System.out.print("What is the starting bid: ");
 					startingBid = input.nextFloat();
 
+					// Send these to the server
+					// The server creates the item and adds it to the auction
 					objectOut.writeUTF(itemName);
 					objectOut.writeFloat(startingBid);
 					objectOut.flush();
@@ -158,20 +193,34 @@ public class Client implements Serializable
 				// Leave auction
 				case 3:
 				{
+					// Gracefully terminate the application
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 					exit = true;
 					break;
 				}
 
+				// This ensures the client enters a value between 1-3 inclusive
 				default:
 				{
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 				}
 			}
+
+			// For spacing the UI
 			System.out.println();
 		} while(!exit);
+
+
 		s.close();
+
+		try {
+            // closing resources 
+            objectIn.close(); 
+            objectOut.close();      
+        } catch(IOException e) { 
+            e.printStackTrace(); 
+        }
 	}
 }
