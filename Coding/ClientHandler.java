@@ -9,21 +9,20 @@ public class ClientHandler implements Runnable
 
     static class CheckTime extends TimerTask 
     {
-        static int num2 = 0;
+        static int timeRemaining = 10;
+
         public void run()
         {
-            // Announce winner of auction and move onto next item
             if (MyTimerTask.isAuctionOver())
             {
-                System.out.println("WORKS");
+                System.out.println("\nAuction has finished. Loading next item...");
                 MyTimerTask.isFinished = false;
-                // checkTimer.cancel();
             }
 
             else
             {
-                System.out.println("working so far" + String.valueOf(num2));
-                num2++;
+                System.out.println("Time Remaining: " + String.valueOf(timeRemaining));
+                timeRemaining--;
             }
         }
     }
@@ -55,24 +54,18 @@ public class ClientHandler implements Runnable
     public void run()  
     { 
         String reply; 
-        while (!exit)  
+        while (!exit)
         {
-            try 
+            try
             {
-                // System.out.println("winner declared here" + sold.getHighestBidder().getUsername());
-                // auction.startTimer();
-                // auction.getTimeRemaining();
-
-                reply = "Enter your username and password\n";
-                System.out.println(reply);
+                reply = "Enter your username\n";
                 objectOut.writeUTF(reply);
                 objectOut.flush();
 
-                String username, password;
+                String username;
                 username = objectIn.readUTF();
-                password = objectIn.readUTF();
 
-                Client c = new Client(username, password);
+                Client c = new Client(username);
                 boolean clientAdded = auction.addClient(c);
                 if(clientAdded)
                 {
@@ -91,90 +84,76 @@ public class ClientHandler implements Runnable
 
                 int i = 0;
 
-                // MyTimerTask task = new MyTimerTask(auction);
                 if (!MyTimerTask.hasStarted)
                 {
-                    timer.schedule(new MyTimerTask(auction), 1000, 1000);
-                    checkTimer.scheduleAtFixedRate(new CheckTime(), 0, 1000);
+                    timer.schedule(new MyTimerTask(auction), 10000, 10000);
+                    checkTimer.schedule(new CheckTime(), 0, 1000);
                     MyTimerTask.hasStarted = true;
                 }
 
                 do
                 {
                     i = objectIn.readInt();
-                    // Check timer
+
                     switch (i)
                     {
                         case 1:
                         {
-                            // Check timer
                             objectOut.flush();
                             objectOut.reset();
+
                             // Send item info thats on sale
                             item = auction.auctionItem();
                             objectOut.writeObject(item);
                             reply = "What would you like to bid? (Must be greater than the current bid)\n";
-                            System.out.println(reply);
                             objectOut.writeUTF(reply);
                             objectOut.flush();
 
                             float bid = objectIn.readFloat();
-                            // Check timer
+
                             boolean bidPlaced = auction.placeBid(bid, c);
 
                             if(bidPlaced)
                             {
-                                reply = "Congrats you are now the highest bidder with " + String.valueOf(bid) + "!\n";
-                                System.out.println(reply);
+                                reply = "\nCongrats you are now the highest bidder with " + String.valueOf(bid) + "!";
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
                                 timer.cancel();
                                 
                                 timer = new Timer();
-                                timer.schedule(new MyTimerTask(auction), 1000, 1000);
+                                timer.schedule(new MyTimerTask(auction), 10000, 10000);
                                 
-                                CheckTime.num2 = 0;
+                                CheckTime.timeRemaining = 10;
 
-                                System.out.println("got here (new timer)");
-                                // auction.stopTimers();
+                                System.out.println("\nNew bid was placed. Resetting timer...");
                             }
 
                             else
                             {
-                                reply = "That didn't work!\n";
-                                System.out.println(reply);
+                                reply = "That didn't work!";
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
                             }
-
                             break;
                         }
 
                         case 2:
                         {
-                            // auction.listAuctionItems();
                             reply = "You want to create a new auction\n";
-                            System.out.println(reply);
                             objectOut.writeUTF(reply);
                             objectOut.flush();
-                            // try {
-                            //  auction = (Auction) objectIn.readObject();
-                            // } catch(Exception e) {
-                            //  System.out.println(e);
-                            // }
+
                             String itemName = objectIn.readUTF();
                             float startingBid = objectIn.readFloat();
                             auction.addItem(itemName, startingBid);
-                            // objectOut.writeObject(auction);
+
                             auction.listAuctionItems();
-                            System.out.println("test2 should be above!\n");
                             break;
                         }
 
                         case 3:
                         {
-                            reply = "You want to leave auction\n";
-                            System.out.println(reply);
+                            reply = "Thanks for taking part!\nGoodbye!";
                             objectOut.writeUTF(reply);
                             objectOut.flush();
                             this.stop();
@@ -191,11 +170,9 @@ public class ClientHandler implements Runnable
                             objectOut.flush();
                         }
                     }
-                    // objectOut.writeObject(auction);
-                }while(!exit);
+                } while(!exit);
 
                 s.close();
-                // ss.close();
             }
             catch (IOException e) {
                 e.printStackTrace(); 
@@ -217,9 +194,7 @@ public class ClientHandler implements Runnable
 
     static class MyTimerTask extends TimerTask  
     {
-        // private Item item;
         final Auction auction;
-        private static int checker = 0;
         private static boolean isFinished;
         private static boolean hasStarted = false;
 
@@ -227,18 +202,12 @@ public class ClientHandler implements Runnable
         {
             isFinished = false;
             this.auction = auction;
-            // item = auction.auctionItem();
         }
 
         @Override
         public void run() 
         {
-            // hasStarted = true;
-            // Announce winner of auction and move onto next item
-            System.out.println("you entered the other timer class");
             auctionNextItem();
-            System.out.println("passed auction next(" + String.valueOf(checker) + ")");
-            checker++;
             isFinished = true;
         }
 
@@ -249,8 +218,8 @@ public class ClientHandler implements Runnable
 
         public void auctionNextItem()
         {
+            CheckTime.timeRemaining = 10;
             auction.AnnounceWinner();
-            CheckTime.num2 = 0;
         }
     }
 }

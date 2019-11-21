@@ -5,7 +5,7 @@ import java.util.*;
 public class Client implements Serializable
 {
 	private String username;
-	private String password;
+	public static boolean newBid = false;
 
 	public static void displayMenu(ArrayList<String> menu)
 	{
@@ -15,10 +15,9 @@ public class Client implements Serializable
 		}
 	}
 
-	public Client(String username, String password)
+	public Client(String username)
 	{
 		this.username = username;
-		this.password = password;
 	}
 
 	public String getUsername()
@@ -26,13 +25,9 @@ public class Client implements Serializable
 		return this.username;
 	}
 
-	public String getPassword()
-	{
-		return this.password;
-	}
-
 	public static void main(String[] args) throws IOException
 	{
+
 		Socket s = new Socket("localhost", 4999);
 		ArrayList<String> menu = null;
 		boolean exit = false;
@@ -45,14 +40,10 @@ public class Client implements Serializable
 		reply = objectIn.readUTF();
 		System.out.println(reply);
 
-		String username, password;
+		String username;
 		System.out.println("Username: ");
 		username = input.nextLine();
 		objectOut.writeUTF(username);
-		
-		System.out.println("\nPassword: ");
-		password = input.nextLine();
-		objectOut.writeUTF(password);
 		objectOut.flush();
 
 		try {
@@ -63,14 +54,13 @@ public class Client implements Serializable
 
 		Item item = null;
 
-		System.out.println("\n");
 		try {
 			item = (Item) objectIn.readObject();
 		} catch(Exception e) {
 			System.out.println(e);
 		}
 
-		System.out.println("The item currently on sale is:\n");
+		System.out.println("\nThe item currently on sale is:");
 		System.out.println("Item Name: " + item.getItemName());
 		System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
 
@@ -79,7 +69,6 @@ public class Client implements Serializable
 		do
 		{
 			// Display item thats on sale
-			System.out.println("\n");
 			displayMenu(menu);
 			System.out.println();
 			
@@ -104,26 +93,15 @@ public class Client implements Serializable
 				{
 					item = null;
 
-					System.out.println("\n");
 					try {
 						item = (Item) objectIn.readObject();
 					} catch(Exception e) {
 						System.out.println(e);
 					}
 
-					System.out.println("The item currently on sale is:\n");
+					System.out.println("\nThe item currently on sale is:");
 					System.out.println("Item Name: " + item.getItemName());
 					System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
-					System.out.println("print timer here");
-
-					// reply = objectIn.readUTF();
-					// System.out.println(reply);
-
-					// auction.listAuctionItems();
-					// int itemNum = input.nextInt();
-					// objectOut.writeInt(itemNum);
-					// objectOut.flush();
-					// input.nextLine();
 
 					reply = objectIn.readUTF();
 					System.out.println(reply);
@@ -175,8 +153,8 @@ public class Client implements Serializable
 					System.out.println(reply);
 				}
 			}
-			System.out.println("\n\n");
-		}while(!exit);
+			System.out.println();
+		} while(!exit);
 		s.close();
 	}
 }

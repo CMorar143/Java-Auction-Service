@@ -7,38 +7,6 @@ public class Auction implements Serializable
 	private ArrayList<Item> Items = new ArrayList<Item>();
 	private ArrayList<Client> Clients = new ArrayList<Client>();
 	private ArrayList<String> menu = new ArrayList<String>();
-	Timer timer = new Timer();
-	Timer timeLeft = new Timer();
-	TimerTask task = new TimerTask() {
-		public void run()
-		{
-			// Announce winner of auction and move onto next item
-			System.out.println("test");
-		}
-	};
-
-	TimerTask getTime = new TimerTask()
-	{
-		int seconds = 6;
-		int i = 0;
-		
-		@Override
-		public void run()
-		{
-			i++;
-
-			if(i % seconds == 0)
-			{
-				System.out.println("Timer action!");
-				timeLeft.cancel();
-			}
-
-			else
-			{
-				System.out.println("Time left:" + (seconds - (i %seconds)) );
-			}
-		}
-	};
 
 	public Auction()
 	{
@@ -95,14 +63,11 @@ public class Auction implements Serializable
 		{
 			return false;
 		}
-		// Add client username and password to file (?)
 	}
 
 	public synchronized void removeClient(Client c)
 	{
 		Clients.remove(c);
-
-		// Remove client username and password from file (?)
 	}
 
 	public synchronized boolean placeBid(float bid, Client c)
@@ -114,8 +79,6 @@ public class Auction implements Serializable
 		{
 			Items.get(0).setCurrentBid(bid);
 			Items.get(0).setHighestBidder(c);
-			// Reset the timer
-
 			return true;
 		}
 
@@ -145,13 +108,15 @@ public class Auction implements Serializable
 		{
 			if (item.getHighestBidder() != null)
 			{
-				System.out.println("winner declared here " + item.getHighestBidder().getUsername());
+				System.out.println("The " + item.getItemName() + " has been sold for " + item.getCurrentBid() + " euro!");
+				System.out.println("And the winner is: " + item.getHighestBidder().getUsername());
 			}
 
 			else
 			{
-				System.out.println("No winner\n");
+				System.out.println("Item has been scrapped as nobody bid on it");
 			}
+			
 			Items.remove(item);
 		}
 
@@ -191,22 +156,5 @@ public class Auction implements Serializable
 		{
 			return true;
 		}
-	}
-
-	public synchronized void startTimer()
-	{
-		// timer.scheduleAtFixedRate(task, 0, 6000);
-		// timer.schedule(task, 6000);
-	}
-
-	public synchronized void getTimeRemaining()
-	{
-		timeLeft.schedule(getTime, 0, 1000);
-	}
-
-	public synchronized void stopTimers()
-	{
-		timer.cancel();
-		timeLeft.cancel();
 	}
 }

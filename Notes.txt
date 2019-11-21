@@ -48,13 +48,18 @@
 
 Functionality
 -> send the current bid to all clients
+	=> after one updates the bid update a field in all clients
+	=> at the top of the menu check if that field has changed if it has display the new bid
+	=> reset the client
 -> send winner to all clients
+
+
 
 Codeing
 -> Remove unneccessary comments
 -> add neccessary comments
 -> error checking
-->try catch exceptions
+-> try catch exceptions
 
 Document
 -> write document
