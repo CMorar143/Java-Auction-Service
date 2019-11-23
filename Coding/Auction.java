@@ -1,3 +1,13 @@
+/**
+ * Implementation-free perspective to be read by developers 
+ * who might not necessarily have the source code at hand
+ * 
+ * @author Cian Morar (C16460726) 
+ * @date 21st November 2019
+ * 
+ */
+
+
 // import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -24,31 +34,31 @@ public class Auction implements Serializable
 		Item item2 = new Item("Couch", 35);
 		Items.add(item2);
 
-		Item item3 = new Item("Antique Door", 30);
-		Items.add(item3);
+		// Item item3 = new Item("Antique Door", 30);
+		// Items.add(item3);
 
-		Item item4 = new Item("Pots", 15);
-		Items.add(item4);
+		// Item item4 = new Item("Pots", 15);
+		// Items.add(item4);
 
-		Item item5 = new Item("Bobble Head Collection", 60);
-		Items.add(item5);
+		// Item item5 = new Item("Bobble Head Collection", 60);
+		// Items.add(item5);
 	}
 
 	// Return the menu for the server to send to the client
-	public synchronized ArrayList<String> displayMenu()
+	public ArrayList<String> displayMenu()
 	{
 		return menu;
 	}
 
 	// Add the client to the list of clients
-	public synchronized void addClient(Client c)
+	public void addClient(Client c)
 	{
 		Clients.add(c);
 	}
 
 	// Remove the client to the list of clients
 	// This will allow others to use that username if the original client has left
-	public synchronized void removeClient(Client c)
+	public void removeClient(Client c)
 	{
 		Clients.remove(c);
 	}
@@ -76,7 +86,7 @@ public class Auction implements Serializable
 	// Checks wwhether or not the new bid is higher than the original
 	// and returns a boolean to inform the server whether the action was successful
 	// Note: Items.get(0) will always be the one currently on auction
-	public synchronized boolean placeBid(float bid, Client c)
+	public boolean placeBid(float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
 		float currentBid = Items.get(0).getCurrentBid();
@@ -95,7 +105,7 @@ public class Auction implements Serializable
 	}
 
 	// Used to validate whether the client successfully added a new item
-	public synchronized void listAuctionItems()
+	public void listAuctionItems()
 	{
 		if (Items != null)
 		{
@@ -110,7 +120,7 @@ public class Auction implements Serializable
 
 	// Announces the winner
 	// Removes the current item so that the next one is now on auction
-	public synchronized void announceWinner()
+	public void announceWinner()
 	{
 		if(areThereItems())
 		{
@@ -131,14 +141,14 @@ public class Auction implements Serializable
 	}
 
 	// Used by the server to add the new item provided by the client
-	public synchronized void addItem(String name, float currentBid) 
+	public void addItem(String name, float currentBid) 
 	{
 		Item newItem = new Item(name, currentBid);
 		Items.add(newItem);
 	}
 
 	// This returns the  item that is currently up for auction
-	public synchronized Item auctionItem()
+	public Item auctionItem()
 	{
 		if (areThereItems())
 		{
@@ -153,7 +163,7 @@ public class Auction implements Serializable
 
 	// Checksto see if the list is empty
 	// i.e. if all the items have already been auctioned off
-	public synchronized boolean areThereItems()
+	public boolean areThereItems()
 	{
 		if (Items.size() == 0)
 		{

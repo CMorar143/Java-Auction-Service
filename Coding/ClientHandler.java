@@ -87,7 +87,7 @@ public class ClientHandler implements Runnable
                 if (!MyTimerTask.hasStarted)
                 {
                     timer.schedule(new MyTimerTask(auction), 10000, 10000);
-                    checkTimer.schedule(new CheckTime(), 0, 1000);
+                    checkTimer.schedule(new CheckTime(auction), 0, 1000);
                     MyTimerTask.hasStarted = true;
                     CheckTime.timeRemaining = 10;
                 }
@@ -153,23 +153,25 @@ public class ClientHandler implements Runnable
                         case 2:
                         {
                             // Read in the item name and starting bid from client
-                            // Use the auction object to create and add this item to the auction
                             String itemName = objectIn.readUTF();
                             float startingBid = objectIn.readFloat();
-                            auction.addItem(itemName, startingBid);
 
                             // When the auction runs out of items, all timers are cancelled
                             // This checks to see if this new item being added is now the only one
                             // in the auction, in which case the timers need to be restarted as the list
                             // is no longer empty
-                            if (!CheckTime.isChecking)
+                            if (!auction.areThereItems())
                             {
                                 checkTimer = new Timer();
                                 timer = new Timer();
                                 timer.schedule(new MyTimerTask(auction), 10000, 10000);
-                                checkTimer.schedule(new CheckTime(), 10, 1000);
+                                checkTimer.schedule(new CheckTime(auction), 10, 1000);
                                 CheckTime.isChecking = true;
+                                CheckTime.timeRemaining = 10;
                             }
+
+                            // Use the auction object to create and add this item to the auction
+                            auction.addItem(itemName, startingBid);
 
                             // Demonstrate on the server side at the new item was added
                             System.out.print("\n");
@@ -233,15 +235,34 @@ public class ClientHandler implements Runnable
     // Used as a countdown to the end of the auction
     static class CheckTime extends TimerTask 
     {
-        static int timeRemaining = 10;
-        static boolean isChecking = true;
+        final Auction auction;
+        static int timeRemaining;
+        static boolean isChecking;
+
+        public CheckTime(Auction auction)
+        {
+            timeRemaining = 10;
+            isChecking = true;
+            this.auction = auction;
+        }
 
         public void run()
         {
             if (MyTimerTask.isAuctionOver())
             {
-                System.out.println("\nAuction has finished. Loading next item...");
-                MyTimerTask.isFinished = false;
+                if (auction.areThereItems())
+                {
+                    System.out.println("\nAuction has finished. Loading next item...");
+                    MyTimerTask.isFinished = false;
+                }
+
+                else
+                {
+                    System.out.println("No more items!");
+                    timer.cancel();
+                    isChecking = false;
+                    checkTimer.cancel();
+                }
             }
 
             else
@@ -278,10 +299,10 @@ public class ClientHandler implements Runnable
 
             else
             {
-                System.out.println("No more items!");
-                checkTimer.cancel();
-                timer.cancel();
-                CheckTime.isChecking = false;
+                // System.out.println("No more items!");
+                // checkTimer.cancel();
+                // timer.cancel();
+                // CheckTime.isChecking = false;
             }
         }
 
