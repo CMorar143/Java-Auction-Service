@@ -1,3 +1,20 @@
+/**
+ * The only field needed for validating the client is the username
+ * that they choose when connecting to the client. All usernames 
+ * must be unique and the application will not allow a client to join
+ * the auction with a username that already in use. 
+ * 
+ * As per the specifications of the project, the client can place a bid 
+ * on the current item, they are allowed to add new items while the auction
+ * is happening, they can view all the items for sale in the auction and
+ * finally they can leave the auction. 
+ * 
+ * 
+ * @author Cian Morar (C16460726) 
+ * @date 21st November 2019
+ * 
+ */
+
 import java.net.*;
 import java.io.*;
 import java.util.*;

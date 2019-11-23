@@ -1,3 +1,18 @@
+/**
+ * The server is where all the clients connect in order
+ * to gain access to the auction and it’s items.
+ * In order to handle multiple clients in concurrency, the Server
+ * class consists of a while loop in which the main purpose is to
+ * listen and accept all incoming client requests.
+ * Once the client is accepted it will create a ClientHandler thread for each one.
+ * This enables the server to be able to handle requests from multiple clients at once.
+ * 
+ * 
+ * @author Cian Morar (C16460726) 
+ * @date 21st November 2019
+ * 
+ */
+
 import java.net.*;
 import java.io.*;
 import java.util.*;

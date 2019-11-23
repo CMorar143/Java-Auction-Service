@@ -1,6 +1,8 @@
 /**
- * Implementation-free perspective to be read by developers 
- * who might not necessarily have the source code at hand
+ * This class contains all the basic functionality and variables
+ * pertaining to the auction, very often it is used by the server 
+ * and is accessed by the client via the client handler class.
+ * 
  * 
  * @author Cian Morar (C16460726) 
  * @date 21st November 2019
@@ -89,17 +91,22 @@ public class Auction implements Serializable
 	public boolean placeBid(float bid, Client c)
 	{
 		// Update the current bid and current client for the item that was passed as the parameter
-		float currentBid = Items.get(0).getCurrentBid();
-
-		if (bid > currentBid)
+		if (areThereItems())
 		{
-			Items.get(0).setCurrentBid(bid);
-			Items.get(0).setHighestBidder(c);
-			return true;
-		}
+			float currentBid = Items.get(0).getCurrentBid();
 
-		else
-		{
+			if (bid > currentBid)
+			{
+				Items.get(0).setCurrentBid(bid);
+				Items.get(0).setHighestBidder(c);
+				return true;
+			}
+
+			else
+			{
+				return false;
+			}
+		} else {
 			return false;
 		}
 	}

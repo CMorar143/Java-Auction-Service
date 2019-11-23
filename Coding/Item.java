@@ -1,6 +1,16 @@
-// import java.net.*;
-import java.io.*;
-import java.util.*;
+/**
+ * Contains all the basic fields useful for dealing with
+ * an item object. It contains fields for the current bid,
+ * the current client who placed that bid and the name of the item.
+ * The class also comes with the necessary getter and setter methods for these fields.
+ * 
+ * 
+ * @author Cian Morar (C16460726) 
+ * @date 21st November 2019
+ * 
+ */
+
+import java.io.Serializable;
 
 public class Item implements Serializable
 {

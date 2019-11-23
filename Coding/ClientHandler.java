@@ -1,3 +1,25 @@
+/**
+ * Each client will interact with the server through the ClientHandler class.
+ * This is where the auction timers are stored.
+ * However, the auction timer needs to be a global timer
+ * i.e. every client should see the same timer for each item in the auction.
+ * Therefore, the timers are all static so they are accessible by 
+ * all instances of the timer classes. 
+ *
+ * The MyTimerTask class is responsible for tracking the bid period 
+ * of each item in the auction. Once this period expires,
+ * this item is removed from the auction and the winner (if any) is announced.
+ * Then the timer resets for the next item.
+ *
+ * The CheckTime class is responsible for providing the server with a countdown.
+ * Every second, this checks whether or not the main bid period has expired. 
+ * 
+ * 
+ * @author Cian Morar (C16460726) 
+ * @date 21st November 2019
+ * 
+ */
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -80,11 +102,11 @@ public class ClientHandler implements Runnable
 
                 // Only start the auction timers after the first client has joined
                 // This ensures that there is only everone instance of the timers scheduled
-                if (!MyTimerTask.hasStarted)
+                if (!MyTimerTask.hasAuctionStarted())
                 {
                     timer.schedule(new MyTimerTask(auction), 10000, 10000);
                     checkTimer.schedule(new CheckTime(auction), 0, 1000);
-                    MyTimerTask.hasStarted = true;
+                    MyTimerTask.setHasStarted(true);
                     CheckTime.timeRemaining = 10;
                 }
 
@@ -105,7 +127,7 @@ public class ClientHandler implements Runnable
                             objectOut.writeObject(item);
                             
                             // If there is still at least one item left
-                            if(item != null)
+                            if (item != null)
                             {
                                 reply = "=> What would you like to bid? (Must be greater than the current bid): ";
                                 objectOut.writeUTF(reply);
@@ -119,7 +141,7 @@ public class ClientHandler implements Runnable
 
                                 // If the bid was successful
                                 // i.e. If the new bid was higher than the previous bid
-                                if(bidPlaced)
+                                if (bidPlaced)
                                 {
                                     reply = "\n=> Congrats you are now the highest bidder with " + String.valueOf(bid) + "!";
                                     objectOut.writeUTF(reply);
@@ -137,7 +159,7 @@ public class ClientHandler implements Runnable
                                 // The bid was unsuccessful
                                 else
                                 {
-                                    reply = "=> Your bid was too low!";
+                                    reply = "=> Your bid was unsuccessful! Please try again";
                                     objectOut.writeUTF(reply);
                                     objectOut.flush();
                                 }
@@ -249,7 +271,7 @@ public class ClientHandler implements Runnable
                 if (auction.areThereItems())
                 {
                     System.out.println("\nAuction has finished. Loading next item...");
-                    MyTimerTask.isFinished = false;
+                    MyTimerTask.setIsFinished(false);
                 }
 
                 else
@@ -276,11 +298,12 @@ public class ClientHandler implements Runnable
     {
         final Auction auction;
         private static boolean isFinished;
-        private static boolean hasStarted = false;
+        private static boolean hasStarted;
 
         public MyTimerTask(Auction auction) 
         {
             isFinished = false;
+            hasStarted = false;
             this.auction = auction;
         }
 
@@ -292,19 +315,26 @@ public class ClientHandler implements Runnable
                 auctionNextItem();
                 isFinished = true;
             }
-
-            else
-            {
-                // System.out.println("No more items!");
-                // checkTimer.cancel();
-                // timer.cancel();
-                // CheckTime.isChecking = false;
-            }
         }
 
         public static boolean isAuctionOver() 
         {
             return isFinished;
+        }
+
+        public static boolean hasAuctionStarted()
+        {
+            return hasStarted;
+        }
+
+        public static void setIsFinished(boolean state)
+        {
+            isFinished = state;
+        }
+
+        public static void setHasStarted(boolean state)
+        {
+            hasStarted = state;
         }
 
         public void auctionNextItem()
