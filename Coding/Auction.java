@@ -40,8 +40,8 @@ public class Auction implements Serializable
 		Item item4 = new Item("Pots", 15);
 		Items.add(item4);
 
-		// Item item5 = new Item("Bobble Head Collection", 60);
-		// Items.add(item5);
+		Item item5 = new Item("Bobble Head Collection", 60);
+		Items.add(item5);
 	}
 
 	// Return the menu for the server to send to the client

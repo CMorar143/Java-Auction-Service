@@ -246,7 +246,7 @@ public class Client implements Serializable
 					// Send these to the server
 					// The server creates the item and adds it to the auction
 					objectOut.writeUTF(itemName);
-					objectOut.writeFloat(startingBid);
+					objectOut.writeFloat(Float.valueOf(decimalFormat.format(startingBid)));
 					objectOut.flush();
 					input.nextLine();
 
@@ -279,6 +279,13 @@ public class Client implements Serializable
 					reply = objectIn.readUTF();
 					System.out.println(reply);
 					exit = true;
+					
+					try {
+						Thread.sleep(2000);
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+
 					break;
 				}
 
