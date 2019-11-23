@@ -106,7 +106,7 @@ public class ClientHandler implements Runnable
                 int i = 0;
 
                 // Only start the auction timers after the first client has joined
-                // This ensures that there is only everone instance of the timers scheduled
+                // This ensures that there is only ever one instance of the timers scheduled
                 if (!MyTimerTask.hasAuctionStarted())
                 {
                     timer.schedule(new MyTimerTask(auction), 10000, 10000);
@@ -306,13 +306,11 @@ public class ClientHandler implements Runnable
     static class MyTimerTask extends TimerTask  
     {
         final Auction auction;
-        private static boolean isFinished;
-        private static boolean hasStarted;
+        private static boolean isFinished = false;
+        private static boolean hasStarted = false;
 
         public MyTimerTask(Auction auction) 
         {
-            isFinished = false;
-            hasStarted = false;
             this.auction = auction;
         }
 

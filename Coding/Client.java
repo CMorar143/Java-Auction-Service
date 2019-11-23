@@ -22,6 +22,7 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 public class Client implements Serializable
 {
@@ -67,6 +68,7 @@ public class Client implements Serializable
 		ArrayList<String> menu = null;
 		boolean exit = false;
 		boolean allowedToLogin = false;
+		DecimalFormat decimalFormat = new DecimalFormat("#.##");
 		String reply = null;
 		Item item = null;
 		Auction auction = null;
@@ -194,7 +196,7 @@ public class Client implements Serializable
 
 						} while (bid <= 0);
 
-						objectOut.writeFloat(bid);
+						objectOut.writeFloat(Float.valueOf(decimalFormat.format(bid)));
 						objectOut.flush();
 						input.nextLine();
 
