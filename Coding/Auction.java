@@ -31,14 +31,14 @@ public class Auction implements Serializable
 		Item item1 = new Item("Antique Chair", 45);
 		Items.add(item1);
 
-		// Item item2 = new Item("Couch", 35);
-		// Items.add(item2);
+		Item item2 = new Item("Couch", 35);
+		Items.add(item2);
 
-		// Item item3 = new Item("Antique Door", 30);
-		// Items.add(item3);
+		Item item3 = new Item("Antique Door", 30);
+		Items.add(item3);
 
-		// Item item4 = new Item("Pots", 15);
-		// Items.add(item4);
+		Item item4 = new Item("Pots", 15);
+		Items.add(item4);
 
 		// Item item5 = new Item("Bobble Head Collection", 60);
 		// Items.add(item5);

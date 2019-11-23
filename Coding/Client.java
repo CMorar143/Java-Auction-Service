@@ -79,8 +79,7 @@ public class Client implements Serializable
 		// For sending and receiving data from the server
 		Scanner input = new Scanner(System.in);
 
-		try
-		{
+		try {
 			objectOut = new ObjectOutputStream(s.getOutputStream());
 			objectIn = new ObjectInputStream(s.getInputStream());
 		} catch (IOException e) {
@@ -88,7 +87,7 @@ public class Client implements Serializable
 		}
 		
 		// Keep looping through until the client enters a unique username
-		while(!allowedToLogin)
+		while (!allowedToLogin)
 		{
 			System.out.print("==> Please enter a unique username: ");
 			username = input.nextLine();
@@ -141,8 +140,10 @@ public class Client implements Serializable
 					System.out.print("=> Please choose a valid number: ");
 					input.next();
 				}
+
 				menuNum = input.nextInt();
-			} while(menuNum <= 0);
+
+			} while (menuNum <= 0);
 
 			// Send client's choice to server
 			objectOut.writeInt(menuNum);
@@ -165,7 +166,7 @@ public class Client implements Serializable
 					}
 
 					// Error checking to ensure there is at least one item
-					// that's still on auction i.e =. that the auction isn't over
+					// that's still on auction i.e that the auction isn't over
 					if (item != null)
 					{
 						System.out.println("\n=> The item currently on sale is:");
@@ -188,8 +189,10 @@ public class Client implements Serializable
 								System.out.print("=> Please choose a valid number: ");
 								input.next();
 							}
+
 							bid = input.nextFloat();
-						} while(bid <= 0);
+
+						} while (bid <= 0);
 
 						objectOut.writeFloat(bid);
 						objectOut.flush();
@@ -203,8 +206,9 @@ public class Client implements Serializable
 					// There are no items
 					else
 					{
-						System.out.println("=> No item to bid on!\nYou will need to add one...");
+						System.out.println("=> No item to bid on!\n=> You will need to add one...\n");
 					}
+
 					break;
 				}
 
@@ -232,8 +236,10 @@ public class Client implements Serializable
 							System.out.print("=> Please choose a valid number: ");
 							input.next();
 						}
+
 						startingBid = input.nextFloat();
-					} while(startingBid <= 0);
+
+					} while (startingBid <= 0);
 
 					// Send these to the server
 					// The server creates the item and adds it to the auction
@@ -284,13 +290,11 @@ public class Client implements Serializable
 
 			// For spacing the UI
 			System.out.println();
-		} while(!exit);
-
-
-		s.close();
+		} while (!exit);
 
 		try {
             // closing resources 
+            s.close();
             objectIn.close(); 
             objectOut.close();      
         } catch(IOException e) { 
