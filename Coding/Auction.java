@@ -21,7 +21,7 @@ public class Auction implements Serializable
 	// Constructor
 	public Auction()
 	{
-		menu.add("Please choose what you would like to do");
+		menu.add("==> Please choose what you would like to do");
 		menu.add("1. Bid On The Item");
 		menu.add("2. Create A New Auction");
 		menu.add("3. List Auction Items");
@@ -31,8 +31,8 @@ public class Auction implements Serializable
 		Item item1 = new Item("Antique Chair", 45);
 		Items.add(item1);
 
-		Item item2 = new Item("Couch", 35);
-		Items.add(item2);
+		// Item item2 = new Item("Couch", 35);
+		// Items.add(item2);
 
 		// Item item3 = new Item("Antique Door", 30);
 		// Items.add(item3);
@@ -107,14 +107,20 @@ public class Auction implements Serializable
 	// Used to validate whether the client successfully added a new item
 	public void listAuctionItems()
 	{
-		if (Items != null)
+		if (areThereItems())
 		{
+			System.out.println("=> The items currently on auction are:");
 			for (int i = 0; i < Items.size(); i++)
 			{
 				System.out.print(String.valueOf(i+1) + ". ");
 				System.out.println("Item Name: " + Items.get(i).getItemName());
 				System.out.println("   Current Bid: " + Items.get(i).getCurrentBid() + "\n");
 			}
+		}
+
+		else
+		{
+			System.out.println("=> There are no items left in the auction to display!");
 		}
 	}
 
@@ -127,13 +133,13 @@ public class Auction implements Serializable
 			Item item = auctionItem();
 			if (item.getHighestBidder() != null)
 			{
-				System.out.println("The " + item.getItemName() + " has been sold for " + item.getCurrentBid() + " euro!");
-				System.out.println("And the winner is: " + item.getHighestBidder().getUsername());
+				System.out.println("=> The " + item.getItemName() + " has been sold for " + item.getCurrentBid() + " euro!");
+				System.out.println("=> And the winner is: " + item.getHighestBidder().getUsername());
 			}
 
 			else
 			{
-				System.out.println("Item has been scrapped as nobody bid on it");
+				System.out.println("=> Item has been scrapped as nobody bid on it");
 			}
 
 			Items.remove(item);

@@ -40,10 +40,6 @@ public class ClientHandler implements Runnable
         {
             try
             {
-                reply = "Enter your username\n";
-                objectOut.writeUTF(reply);
-                objectOut.flush();
-
                 String username;
                 Client c;
 
@@ -111,7 +107,7 @@ public class ClientHandler implements Runnable
                             // If there is still at least one item left
                             if(item != null)
                             {
-                                reply = "What would you like to bid? (Must be greater than the current bid)";
+                                reply = "=> What would you like to bid? (Must be greater than the current bid): ";
                                 objectOut.writeUTF(reply);
                                 objectOut.flush();
 
@@ -125,7 +121,7 @@ public class ClientHandler implements Runnable
                                 // i.e. If the new bid was higher than the previous bid
                                 if(bidPlaced)
                                 {
-                                    reply = "\nCongrats you are now the highest bidder with " + String.valueOf(bid) + "!";
+                                    reply = "\n=> Congrats you are now the highest bidder with " + String.valueOf(bid) + "!";
                                     objectOut.writeUTF(reply);
                                     objectOut.flush();
                                     
@@ -135,13 +131,13 @@ public class ClientHandler implements Runnable
                                     timer.schedule(new MyTimerTask(auction), 10000, 10000);
                                     CheckTime.timeRemaining = 10;
 
-                                    System.out.println("\nNew bid was placed. Resetting timer...");                        
+                                    System.out.println("\n=> New bid was placed. Resetting timer...");                        
                                 }
 
                                 // The bid was unsuccessful
                                 else
                                 {
-                                    reply = "Your bid was too low!";
+                                    reply = "=> Your bid was too low!";
                                     objectOut.writeUTF(reply);
                                     objectOut.flush();
                                 }
@@ -175,7 +171,7 @@ public class ClientHandler implements Runnable
 
                             // Demonstrate on the server side at the new item was added
                             System.out.print("\n");
-                            System.out.println("All items currently in the auction:");
+                            System.out.println("=> All items currently in the auction:");
 
                             auction.listAuctionItems();
                             break;
@@ -194,7 +190,7 @@ public class ClientHandler implements Runnable
                         // If the client chooses to terminate
                         case 4:
                         {
-                            reply = "Thanks for taking part!\nGoodbye!";
+                            reply = "=> Thanks for taking part!\n=> Goodbye!";
                             objectOut.writeUTF(reply);
                             objectOut.flush();
                             this.stop();
@@ -206,7 +202,7 @@ public class ClientHandler implements Runnable
                         // Ensures the input is between 1-4 inclusive
                         default:
                         {
-                            reply = "Value must be between 1-4";
+                            reply = "=> Value must be between 1-4";
                             System.out.println(reply);
                             objectOut.writeUTF(reply);
                             objectOut.flush();

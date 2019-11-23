@@ -65,15 +65,11 @@ public class Client implements Serializable
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-
-		// "Enter your username"
-		reply = objectIn.readUTF();
-		System.out.println(reply);
 		
 		// Keep looping through until the client enters a unique username
 		while(!allowedToLogin)
 		{
-			System.out.print("Please enter a unique username: ");
+			System.out.print("==> Please enter a unique username: ");
 			username = input.nextLine();
 			objectOut.writeUTF(username);
 			objectOut.flush();
@@ -81,7 +77,7 @@ public class Client implements Serializable
 
 			if (!allowedToLogin)
 			{
-				System.out.println(username + " is already taken!");
+				System.out.println("=> " + username + " is already taken!");
 			}
 		}
 
@@ -97,14 +93,14 @@ public class Client implements Serializable
 
 		if (item != null)
 		{
-			System.out.println("\nThe item currently on sale is:");
+			System.out.println("\n=> The item currently on sale is:");
 			System.out.println("Item Name: " + item.getItemName());
 			System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
 		}
 
 		else
 		{
-			System.out.println("No item to bid on!\nYou will need to add one...");
+			System.out.println("=> No item to bid on!\nYou will need to add one...");
 		}
 
 		// Loop until the client chooses to exit
@@ -118,10 +114,10 @@ public class Client implements Serializable
 			// Loops until the client enters a positive integer
 			do
 			{
-				System.out.print("Please choose what you would like to do: ");
+				System.out.print("==> Please choose what you would like to do: ");
 				while (!input.hasNextInt())
 				{
-					System.out.print("Please choose a valid number");
+					System.out.print("=> Please choose a valid number: ");
 					input.next();
 				}
 				menuNum = input.nextInt();
@@ -151,19 +147,24 @@ public class Client implements Serializable
 					// that's still on auction i.e =. that the auction isn't over
 					if (item != null)
 					{
-						System.out.println("\nThe item currently on sale is:");
+						System.out.println("\n=> The item currently on sale is:");
 						System.out.println("Item Name: " + item.getItemName());
 						System.out.println("Current Bid: " + item.getCurrentBid() + "\n");
 
 						reply = objectIn.readUTF();
-						System.out.println(reply);
+						System.out.print(reply);
 
 						// Send bid amount to the server
 						do
 						{
+							if (bid < 0)
+							{
+								System.out.print("=> The bid must be greater than 0: ");
+							}
+
 							while (!input.hasNextFloat())
 							{
-								System.out.print("Please choose a valid number: ");
+								System.out.print("=> Please choose a valid number: ");
 								input.next();
 							}
 							bid = input.nextFloat();
@@ -181,7 +182,7 @@ public class Client implements Serializable
 					// There are no items
 					else
 					{
-						System.out.println("No item to bid on!\nYou will need to add one...");
+						System.out.println("=> No item to bid on!\nYou will need to add one...");
 					}
 					break;
 				}
@@ -193,15 +194,21 @@ public class Client implements Serializable
 					String itemName = null;
 					float startingBid = 0;
 
-					System.out.print("What would you like to auction off: ");
+					System.out.print("=> What would you like to auction off: ");
 					itemName = input.nextLine();
 
-					System.out.print("What is the starting bid: ");
 					do
 					{
+						if (startingBid < 0)
+						{
+							System.out.print("=> The starting bid must be greater than 0: ");
+						} else {
+							System.out.print("=> What is the starting bid: ");
+						}
+
 						while (!input.hasNextFloat())
 						{
-							System.out.print("Please choose a valid number: ");
+							System.out.print("=> Please choose a valid number: ");
 							input.next();
 						}
 						startingBid = input.nextFloat();
