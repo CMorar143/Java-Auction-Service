@@ -15,9 +15,13 @@
  * 
  */
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
+import java.net.Socket;
+import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Client implements Serializable
 {
